@@ -1,13 +1,581 @@
 <!DOCTYPE html>
-<html>
-<head>
-	<!-- Add CSS at the head of HTML file -->
-    <link rel="stylesheet" href="./css/main.css">
-</head>
-<body>
-		<!-- Your code goes here-->
+<html lang="en">
 
-	<!-- Add JS at the bottom of HTML file --> 
-        <script src="./js/main.js"></script>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Transfer Learning with Deep CNNs</title>
+	<link rel="stylesheet" href="./css/main.css">
+	<!-- Chart.js for visualizations -->
+	<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+
+<body>
+	<div class="simulation-container">
+		<!-- Step Sidebar -->
+		<aside class="step-sidebar">
+			<div class="step-sidebar-header">
+				<h3>Experiment Steps</h3>
+			</div>
+
+			<div class="step-list">
+				<div class="step-item active" data-step="1">
+					<div class="step-indicator">
+						<span class="step-number">1</span>
+					</div>
+					<span class="step-title">Import Libraries</span>
+				</div>
+
+				<div class="step-item" data-step="2">
+					<div class="step-indicator">
+						<span class="step-number">2</span>
+					</div>
+					<span class="step-title">Define Parameters</span>
+				</div>
+
+				<div class="step-item" data-step="3">
+					<div class="step-indicator">
+						<span class="step-number">3</span>
+					</div>
+					<span class="step-title">Visualize Dataset</span>
+				</div>
+
+				<div class="step-item" data-step="4">
+					<div class="step-indicator">
+						<span class="step-number">4</span>
+					</div>
+					<span class="step-title">Build & Train Model</span>
+				</div>
+
+				<div class="step-item" data-step="5">
+					<div class="step-indicator">
+						<span class="step-number">5</span>
+					</div>
+					<span class="step-title">Evaluate Model</span>
+				</div>
+
+				<div class="step-item" data-step="6">
+					<div class="step-indicator">
+						<span class="step-number">6</span>
+					</div>
+					<span class="step-title">Visualize Results</span>
+				</div>
+
+				<div class="step-item" data-step="7">
+					<div class="step-indicator">
+						<span class="step-number">7</span>
+					</div>
+					<span class="step-title">Confusion Matrix</span>
+				</div>
+			</div>
+
+			<div class="step-sidebar-footer">
+				<button class="run-all-btn" id="downloadBtn">
+					Download Experiment
+				</button>
+				<button class="reset-btn" id="resetBtn">
+					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+						<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+						<path d="M3 3v5h5" />
+					</svg>
+					Reset
+				</button>
+			</div>
+		</aside>
+
+		<!-- Main Notebook Area -->
+		<main class="notebook-area">
+			<div class="notebook-header">
+				<h1>Transfer Learning with Deep CNNs</h1>
+				<p class="notebook-subtitle">Fine-tuning pretrained models on Oxford Flowers 102 dataset</p>
+			</div>
+
+			<!-- Parameter Selectors -->
+			<div class="param-selector">
+				<div class="param-group">
+					<label for="modelSelect">Model:</label>
+					<select id="modelSelect" class="param-dropdown">
+						<option value="mobilenetv2">MobileNetV2</option>
+						<option value="vgg19">VGG19</option>
+					</select>
+				</div>
+				<div class="param-group">
+					<label for="freezeSelect">Layer Freezing:</label>
+					<select id="freezeSelect" class="param-dropdown wide">
+						<option value="0">Base Freeze (0% Unfreeze)</option>
+						<option value="10">10% Unfreeze</option>
+						<option value="20">20% Unfreeze</option>
+					</select>
+				</div>
+			</div>
+
+			<!-- Notebook Cells -->
+			<!-- Step 1: Import Libraries -->
+			<div class="notebook-cell" data-step="1">
+				<div class="cell-header">
+					<span class="cell-label">Step 1: Import Libraries</span>
+					<button class="run-btn" data-step="1">
+						<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+							<path d="M8 5v14l11-7z" />
+						</svg>
+						Run
+					</button>
+				</div>
+				<div class="cell-code">
+					<pre><code># Importing Libraries
+import os
+import numpy as np
+import matplotlib.pyplot as plt
+import tensorflow as tf
+import seaborn as sns
+import json
+from sklearn.metrics import classification_report
+from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
+from tensorflow.keras.layers import GlobalAveragePooling2D, Dense, Dropout
+from tensorflow.keras.models import Model
+from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.applications import MobileNetV2
+
+print(&quot;All the required libraries are imported.\n&quot;)</code></pre>
+				</div>
+				<div class="cell-output hidden">
+					<div class="output-label">Output:</div>
+					<div class="output-content text-output">
+						<pre id="output1"
+							class="success-text">All the required libraries are imported successfully.</pre>
+					</div>
+				</div>
+			</div>
+
+			<!-- Step 2: Define Parameters -->
+			<div class="notebook-cell" data-step="2">
+				<div class="cell-header">
+					<span class="cell-label">Step 2: Define Parameters</span>
+					<button class="run-btn" data-step="2" disabled>
+						<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+							<path d="M8 5v14l11-7z" />
+						</svg>
+						Run
+					</button>
+				</div>
+				<div class="cell-code">
+					<pre><code># Defining Paths &amp; Parameters
+base_path = &#x27;/kaggle/input/oxford-102-flower-dataset/102 flower/flowers&#x27;
+json_path = &#x27;/kaggle/input/oxford-102-flower-dataset/102 flower/cat_to_name.json&#x27;
+img_size = 224
+batch_size = 32
+epochs = 150
+patience = 15
+learning_rate = 1e-4
+output_dir = &#x27;./mobilenetv2_outputs&#x27;
+os.makedirs(output_dir, exist_ok=True)
+
+print(f&quot;Parameters for training are set as:&quot;)
+print(f&quot;  Image Size: {img_size}&quot;)
+print(f&quot;  Batch Size: {batch_size}&quot;)
+print(f&quot;  Epochs: {epochs}&quot;)
+print(f&quot;  Patience: {patience}&quot;)
+print(f&quot;  Learning Rate: {learning_rate}\n&quot;)</code></pre>
+				</div>
+				<div class="cell-output hidden">
+					<div class="output-label">Output:</div>
+					<div class="output-content text-output">
+						<pre id="output2"></pre>
+					</div>
+				</div>
+			</div>
+
+			<!-- Step 3: Visualize Dataset -->
+			<div class="notebook-cell" data-step="3">
+				<div class="cell-header">
+					<span class="cell-label">Step 3: Visualize Dataset</span>
+					<button class="run-btn" data-step="3" disabled>
+						<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+							<path d="M8 5v14l11-7z" />
+						</svg>
+						Run
+					</button>
+				</div>
+				<div class="cell-code">
+					<pre><code># Visualzing Dataset
+with open(json_path, &#x27;r&#x27;) as f:
+    real_names = json.load(f)
+
+numeric_classes = sorted(os.listdir(os.path.join(base_path, &#x27;train&#x27;)))
+num_classes = len(numeric_classes)
+class_names = [real_names[c] for c in numeric_classes]
+
+print(&quot;\n================ CLASS MAPPING TABLE ================&quot;)
+print(f&quot;Number of classes: {num_classes}\n&quot;)
+print(f&quot;{&#x27;Folder&#x27;:&lt;10} | {&#x27;Flower Name&#x27;}&quot;)
+print(&quot;-&quot; * 50)
+for f, cname in zip(numeric_classes, class_names):
+    print(f&quot;{f:&lt;10} | {cname}&quot;)
+print(&quot;======================================================\n&quot;)
+
+train_raw = tf.keras.utils.image_dataset_from_directory(
+    os.path.join(base_path, &quot;train&quot;),
+    image_size=(img_size, img_size),
+    batch_size=9,          # small batch for visualization
+    label_mode=&#x27;int&#x27;,
+    shuffle=True,
+    verbose=0)
+
+# Showing samples from dataset
+def show_samples(ds_raw, numeric_class_list, name_map, n=9):
+    plt.figure(figsize=(8, 8))
+
+    for batch_x, batch_y in ds_raw.take(1):
+        imgs = batch_x.numpy().astype(&quot;uint8&quot;)
+        labels = batch_y.numpy()
+        break
+
+    rows = int(np.ceil(np.sqrt(n)))
+    for i in range(n):
+        ax = plt.subplot(rows, rows, i+1)
+        plt.imshow(imgs[i])
+        folder_id = numeric_class_list[int(labels[i])]
+        cls_name = name_map[folder_id]
+        ax.set_title(cls_name, fontsize=9)
+        ax.axis(&quot;off&quot;)
+
+    plt.tight_layout()
+    plt.show()
+
+print(&quot;\nShowing random sample images from the dataset...\n&quot;)
+show_samples(train_raw, numeric_classes, real_names, n=9)</code></pre>
+				</div>
+				<div class="cell-output hidden">
+					<div class="output-label">Output:</div>
+					<div class="output-content">
+						<pre id="output3"></pre>
+						<div class="image-output-wrapper">
+							<img id="datasetImage" src="" alt="Sample Images">
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Step 4: Build & Train Model -->
+			<div class="notebook-cell" data-step="4">
+				<div class="cell-header">
+					<span class="cell-label">Step 4: Build & Train Model</span>
+					<button class="run-btn" data-step="4" disabled>
+						<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+							<path d="M8 5v14l11-7z" />
+						</svg>
+						Run
+					</button>
+				</div>
+				<div class="cell-code" id="trainingCode">
+					<pre><code># Model Training
+
+# Loading dataset
+train_ds = tf.keras.utils.image_dataset_from_directory(
+    os.path.join(base_path, &quot;train&quot;),
+    image_size=(img_size, img_size),
+    batch_size=batch_size,
+    label_mode=&#x27;int&#x27;,
+    shuffle=True)
+
+valid_ds = tf.keras.utils.image_dataset_from_directory(
+    os.path.join(base_path, &quot;valid&quot;),
+    image_size=(img_size, img_size),
+    batch_size=batch_size,
+    label_mode=&#x27;int&#x27;,
+    shuffle=True)
+
+test_ds = tf.keras.utils.image_dataset_from_directory(
+    os.path.join(base_path, &quot;test&quot;),
+    image_size=(img_size, img_size),
+    batch_size=batch_size,
+    label_mode=&#x27;int&#x27;,
+    shuffle=False)
+
+# Preprocess function
+def preprocess(image, label):
+    image = preprocess_input(tf.cast(image, tf.float32))
+    label = tf.one_hot(label, num_classes)
+    return image, label
+
+train_ds = train_ds.map(preprocess).prefetch(tf.data.AUTOTUNE)
+valid_ds = valid_ds.map(preprocess).prefetch(tf.data.AUTOTUNE)
+test_ds = test_ds.map(preprocess).prefetch(tf.data.AUTOTUNE)
+
+# Function to set trainable layers
+def set_trainable_layers(base_model, unfreeze_percent):
+    total_layers = len(base_model.layers)
+    num_unfreeze = int(total_layers * unfreeze_percent)
+    
+    for i, layer in enumerate(base_model.layers):
+        if i &lt; total_layers - num_unfreeze:
+            layer.trainable = False
+        else:
+            layer.trainable = True
+    
+    print(f&quot;Total layers in base model: {total_layers}&quot;)
+    print(f&quot;Unfreeze percent: {unfreeze_percent*100:.1f}%&quot;)
+    print(f&quot;No. of layers unfreeze: {num_unfreeze}&quot;)
+    print(f&quot;Layers freeze: {total_layers - num_unfreeze}&quot;)
+    if unfreeze_percent != 0:
+        print(&quot;\nList of unfreeze layers:&quot;)
+        for i, layer in enumerate(base_model.layers[-num_unfreeze:]):
+            print(f&quot;  {i + (total_layers - num_unfreeze)}: {layer.name}&quot;)
+
+# Build model
+base_model = MobileNetV2(include_top=False, weights=&#x27;imagenet&#x27;, input_shape=(img_size, img_size, 3))
+
+# Unfreeze last 0% of layers
+set_trainable_layers(base_model, 0.00)
+
+x = GlobalAveragePooling2D()(base_model.output)
+x = Dropout(0.3)(x)
+x = Dense(512, activation=&#x27;relu&#x27;)(x)
+x = Dropout(0.3)(x)
+output = Dense(num_classes, activation=&#x27;softmax&#x27;)(x)
+model = Model(base_model.input, output)
+print(f&quot;Total layers in final model: {len(model.layers)}&quot;)
+
+def compact_model_summary(model, base_model_name=&quot;MobileNetV2&quot;, custom_layer_start_idx=-5):
+    col1_width = 52
+    col2_width = 25
+    col3_width = 12
+
+    print(f&quot;{&#x27;Layer (type)&#x27;:&lt;{col1_width}} {&#x27;Output Shape&#x27;:&lt;{col2_width}} {&#x27;Param #&#x27;:&gt;{col3_width}}&quot;)
+    print(&quot;=&quot; * (col1_width + col2_width + col3_width))
+
+    base_output = model.layers[custom_layer_start_idx - 1].output.shape
+    total_base_params = sum([l.count_params() for l in model.layers[:custom_layer_start_idx]])
+    print(f&quot;{base_model_name.title()} (Functional)&quot;.ljust(col1_width), f&quot;{str(base_output):&lt;{col2_width}}&quot;, f&quot;{total_base_params:&gt;{col3_width},}&quot;)
+
+    for layer in model.layers[custom_layer_start_idx:]:
+        name = layer.name
+        layer_type = layer.__class__.__name__
+        try:
+            output_shape = str(layer.output.shape)
+        except:
+            output_shape = &quot;N/A&quot;
+        params = f&quot;{layer.count_params():,}&quot;
+        print(f&quot;{name + &#x27; (&#x27; + layer_type + &#x27;)&#x27;:&lt;{col1_width}} {output_shape:&lt;{col2_width}} {params:&gt;{col3_width}}&quot;)
+
+    print(&quot;=&quot; * (col1_width + col2_width + col3_width))
+
+    total_params = model.count_params()
+    trainable_params = np.sum([tf.keras.backend.count_params(w) for w in model.trainable_weights])
+    non_trainable_params = np.sum([tf.keras.backend.count_params(w) for w in model.non_trainable_weights])
+
+    print(f&quot;Total params: {total_params:,}&quot;)
+    print(f&quot;Trainable params: {trainable_params:,}&quot;)
+    print(f&quot;Non-trainable params: {non_trainable_params:,}&quot;)
+
+print(&quot;\nPrinting Model Summary:&quot;)
+compact_model_summary(model, base_model_name=&quot;MobileNetV2&quot;, custom_layer_start_idx=-5)
+
+# Compile model
+loss_fn = tf.keras.losses.CategoricalCrossentropy(label_smoothing=0.1)
+
+ckpt_path = os.path.join(output_dir, &quot;best_model.h5&quot;)
+callbacks = [
+    EarlyStopping(monitor=&#x27;val_loss&#x27;, patience=patience, restore_best_weights=True, verbose=0),
+    ModelCheckpoint(ckpt_path, save_best_only=True, monitor=&#x27;val_loss&#x27;, verbose=0)
+]
+
+model.compile(optimizer=Adam(learning_rate), loss=loss_fn, metrics=[&#x27;accuracy&#x27;])
+
+# Train model
+print(&quot;\nStarting training...\n&quot;)
+history = model.fit(
+    train_ds,
+    validation_data=valid_ds,
+    epochs=epochs,
+    callbacks=callbacks,
+    verbose=0)
+print(&quot;\nTraining completed.&quot;)</code></pre>
+				</div>
+				<div class="cell-output hidden">
+					<div class="output-label">Output:</div>
+					<div class="output-content training-output">
+						<pre id="output4"></pre>
+					</div>
+				</div>
+			</div>
+
+			<!-- Step 5: Evaluate Model -->
+			<div class="notebook-cell" data-step="5">
+				<div class="cell-header">
+					<span class="cell-label">Step 5: Evaluate Model</span>
+					<button class="run-btn" data-step="5" disabled>
+						<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+							<path d="M8 5v14l11-7z" />
+						</svg>
+						Run
+					</button>
+				</div>
+				<div class="cell-code">
+					<pre><code># Model Evaluation
+print(&quot;\nLoading best model for evaluation...&quot;)
+best_model = tf.keras.models.load_model(ckpt_path)
+
+print(&quot;\nEvaluating on Train:&quot;)
+train_loss, train_acc = best_model.evaluate(train_ds, verbose=0)
+print(f&quot;Train Accuracy: {train_acc*100:.2f}%&quot;)
+
+print(&quot;\nEvaluating on Validation:&quot;)
+val_loss, val_acc = best_model.evaluate(valid_ds, verbose=0)
+print(f&quot;Validation Accuracy: {val_acc*100:.2f}%&quot;)
+
+print(&quot;\nEvaluating on Test:&quot;)
+test_loss, test_acc = best_model.evaluate(test_ds, verbose=0)
+print(f&quot;Test Accuracy: {test_acc*100:.2f}%&quot;)</code></pre>
+				</div>
+				<div class="cell-output hidden">
+					<div class="output-label">Output:</div>
+					<div class="output-content">
+						<pre id="output5"></pre>
+						<div class="metrics-summary" id="metricsSummary" style="margin-top: 16px; display: none;">
+							<div class="test-loss" style="display: flex; gap: 24px;">
+								<div><span class="loss-label">Train:</span> <span class="loss-value"
+										id="trainAcc">-</span></div>
+								<div><span class="loss-label">Validation:</span> <span class="loss-value"
+										id="valAcc">-</span></div>
+								<div><span class="loss-label">Test:</span> <span class="loss-value"
+										id="testAcc">-</span></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Step 6: Visualize Results -->
+			<div class="notebook-cell" data-step="6">
+				<div class="cell-header">
+					<span class="cell-label">Step 6: Visualize Results</span>
+					<button class="run-btn" data-step="6" disabled>
+						<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+							<path d="M8 5v14l11-7z" />
+						</svg>
+						Run
+					</button>
+				</div>
+				<div class="cell-code">
+					<pre><code># Visualizing Results
+
+# Training curves
+def plot_training_curves(history):
+    acc = history.history[&quot;accuracy&quot;]
+    val_acc = history.history[&quot;val_accuracy&quot;]
+    loss = history.history[&quot;loss&quot;]
+    val_loss = history.history[&quot;val_loss&quot;]
+    epochs_range = range(1, len(acc) + 1)
+
+    plt.figure(figsize=(14, 5))
+
+    # Accuracy
+    plt.subplot(1, 2, 1)
+    plt.plot(epochs_range, acc, label=&quot;Train Acc&quot;)
+    plt.plot(epochs_range, val_acc, label=&quot;Val Acc&quot;)
+    plt.xlabel(&quot;Epoch&quot;)
+    plt.ylabel(&quot;Accuracy&quot;)
+    plt.title(&quot;Training vs Validation Accuracy&quot;)
+    plt.legend()
+
+    # Loss
+    plt.subplot(1, 2, 2)
+    plt.plot(epochs_range, loss, label=&quot;Train Loss&quot;)
+    plt.plot(epochs_range, val_loss, label=&quot;Val Loss&quot;)
+    plt.xlabel(&quot;Epoch&quot;)
+    plt.ylabel(&quot;Loss&quot;)
+    plt.title(&quot;Training vs Validation Loss&quot;)
+    plt.legend()
+
+    plt.tight_layout()
+    plt.show()
+
+print(&quot;\nPlotting training curves...&quot;)
+plot_training_curves(history)
+
+# Classification report
+y_true = []
+y_pred = []
+
+for x_batch, y_batch in test_ds:
+    preds = best_model.predict(x_batch, verbose=0)
+    y_pred.extend(np.argmax(preds, axis=1))
+    y_true.extend(np.argmax(y_batch.numpy(), axis=1))
+
+y_true = np.array(y_true)
+y_pred = np.array(y_pred)
+
+print(&quot;\nClassification Report:&quot;)
+print(classification_report(y_true, y_pred, target_names=class_names, zero_division=0))</code></pre>
+				</div>
+				<div class="cell-output hidden">
+					<div class="output-label">Output:</div>
+					<div class="output-content">
+						<pre id="output6"></pre>
+						<div class="image-output-wrapper">
+							<img id="trainingCurvesImage" src="" alt="Training Curves">
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Step 7: Confusion Matrix -->
+			<div class="notebook-cell" data-step="7">
+				<div class="cell-header">
+					<span class="cell-label">Step 7: Confusion Matrix</span>
+					<button class="run-btn" data-step="7" disabled>
+						<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+							<path d="M8 5v14l11-7z" />
+						</svg>
+						Run
+					</button>
+				</div>
+				<div class="cell-code">
+					<pre><code># Confusion Matrix
+from sklearn.metrics import confusion_matrix
+cm = confusion_matrix(y_true, y_pred)
+
+plt.figure(figsize=(30, 30))
+sns.heatmap(cm, cmap=&quot;Blues&quot;, annot=True, fmt=&#x27;d&#x27;,
+            xticklabels=class_names, yticklabels=class_names)
+plt.xlabel(&quot;Predicted&quot;)
+plt.ylabel(&quot;True&quot;)
+plt.title(&quot;Confusion Matrix&quot;)
+plt.tight_layout()
+plt.show()</code></pre>
+				</div>
+				<div class="cell-output hidden">
+					<div class="output-label">Output:</div>
+					<div class="output-content">
+						<div class="image-output-wrapper confusion-matrix-wrapper">
+							<img id="confusionMatrixImage" src="" alt="Confusion Matrix">
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Completion message -->
+			<div class="completion-message hidden" id="completionMessage">
+				<div class="completion-icon">🎉</div>
+				<div class="completion-text">
+					<h3>Experiment Completed!</h3>
+					<p>You have successfully trained a transfer learning model on the Oxford Flowers dataset.
+						Try changing the model and layer freezing options to see how they affect the results!</p>
+				</div>
+			</div>
+		</main>
+	</div>
+
+	<!-- Loading Overlay -->
+	<div class="loading-overlay hidden" id="loadingOverlay">
+		<div class="loading-spinner"></div>
+		<div class="loading-text">Executing...</div>
+	</div>
+
+	<script src="./js/data.js"></script>
+	<script src="./js/main.js"></script>
 </body>
+
 </html>

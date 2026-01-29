@@ -2,37 +2,173 @@
   "version": 2.0,
   "questions": [
     {
-      "question": "This is a Sample Question 1?",
+      "question": "What is the main purpose of unfreezing the last layers in Transfer Learning?",
       "answers": {
-        "a": "answer1",
-        "b": "answer2",
-        "c": "answer3",
-        "d": "answer4"
+        "a": "To allow the model to adapt high-level features to the target dataset",
+        "b": "To permanently delete the pretrained backbone",
+        "c": "To stop training in the network",
+        "d": "To increase the dataset size automatically"
       },
       "explanations": {
-        "a": "Explanation 1  <a href='www.google.com'>here</a>",
-        "b": "Explanation 2",
-        "c": "Explanation 2",
-        "d": "Explanation 2"
+        "a": "Correct because deeper layers capture complex task-specific patterns, so unfreezing them improves adaptation to the new dataset.",
+        "b": "Incorrect because transfer learning uses the pretrained backbone, it does not delete it.",
+        "c": "Incorrect because unfreezing layers is done to enable learning, not to stop it.",
+        "d": "Incorrect because unfreezing layers does not increase dataset size."
       },
       "correctAnswer": "a",
       "difficulty": "beginner"
     },
     {
-      "question": "This is a Sample Question 2?",
+      "question": "If training accuracy is very high but validation accuracy is low, it indicates:",
       "answers": {
-        "a": "answer1",
-        "b": "answer2",
-        "c": "answer3",
-        "d": "answer4"
+        "a": "Perfect model performance",
+        "b": "Underfitting",
+        "c": "Overfitting",
+        "d": "Data preprocessing is not required"
       },
       "explanations": {
-        "a": "Explanation 1  <a href='www.google.com'>here</a>",
-        "b": "Explanation 2",
-        "c": "Explanation 2",
-        "d": "Explanation 2"
+        "a": "Incorrect because perfect performance means both training and validation accuracy are high.",
+        "b": "Incorrect because underfitting happens when both training and validation accuracy are low.",
+        "c": "Correct because the model learns training patterns too well but fails to generalize.",
+        "d": "Incorrect because preprocessing is still required for good performance."
       },
       "correctAnswer": "c",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Why is a smaller learning rate preferred during fine-tuning?",
+      "answers": {
+        "a": "To increase memory usage",
+        "b": "To avoid large weight updates that can damage pretrained features",
+        "c": "To make the dataset larger",
+        "d": "To remove the need for backpropagation"
+      },
+      "explanations": {
+        "a": "Incorrect because memory usage is not directly controlled by learning rate.",
+        "b": "Correct because fine-tuning requires small updates to preserve useful pretrained weights.",
+        "c": "Incorrect because learning rate does not affect dataset size.",
+        "d": "Incorrect because training always uses backpropagation."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "In MobileNetV2, base freeze means:",
+      "answers": {
+        "a": "Training the entire model from scratch",
+        "b": "Freezing all backbone layers and training only the added classifier layers",
+        "c": "Removing the classifier layers",
+        "d": "Increasing the image size automatically"
+      },
+      "explanations": {
+        "a": "Incorrect because base freeze does not train the whole backbone again.",
+        "b": "Correct because the backbone works as a fixed feature extractor and only the new layers learn.",
+        "c": "Incorrect because classifier layers are required for prediction.",
+        "d": "Incorrect because image resizing is done in preprocessing."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Unfreezing 20% of the last layers mainly helps in:",
+      "answers": {
+        "a": "Learning only basic edges and textures",
+        "b": "Increasing batch size automatically",
+        "c": "Learning task-specific patterns for the target dataset",
+        "d": "Converting the CNN into an SVM model"
+      },
+      "explanations": {
+        "a": "Incorrect because basic features are learned in early layers.",
+        "b": "Incorrect because unfreezing layers does not change batch size.",
+        "c": "Correct because deeper layers learn complex features that are more target-dependent.",
+        "d": "Incorrect because unfreezing does not change the algorithm type."
+      },
+      "correctAnswer": "c",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Which pretrained model is generally more computationally heavy?",
+      "answers": {
+        "a": "VGG19",
+        "b": "MobileNetV2",
+        "c": "KNN",
+        "d": "Naive Bayes"
+      },
+      "explanations": {
+        "a": "Correct because VGG19 has many parameters and requires higher computation.",
+        "b": "Incorrect because it is designed to be lightweight and efficient.",
+        "c": "Incorrect because KNN is not a deep CNN model.",
+        "d": "Incorrect because it is not a CNN architecture."
+      },
+      "correctAnswer": "a",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Which plot best helps in checking training performance and overfitting?",
+      "answers": {
+        "a": "Histogram of file names",
+        "b": "Scatter plot of random points",
+        "c": "Confusion matrix before training",
+        "d": "Accuracy and loss curves"
+      },
+      "explanations": {
+        "a": "Incorrect because file names do not show training behavior.",
+        "b": "Incorrect because random scatter plots do not reflect model learning.",
+        "c": "Incorrect because confusion matrix is useful after predictions, not before training.",
+        "d": "Correct because these curves show learning progress and generalization issues."
+      },
+      "correctAnswer": "d",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "If validation loss increases while training loss decreases, it usually means:",
+      "answers": {
+        "a": "The model is underfitting",
+        "b": "The model is generalizing perfectly",
+        "c": "The model is overfitting",
+        "d": "The dataset has no images"
+      },
+      "explanations": {
+        "a": "Incorrect because underfitting means training loss is also high.",
+        "b": "Incorrect because increasing validation loss indicates poor generalization.",
+        "c": "Correct because the model fits training data well but performs worse on unseen validation data.",
+        "d": "Incorrect because training cannot proceed properly without images."
+      },
+      "correctAnswer": "c",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "What is the purpose of the Softmax layer in CNN classification?",
+      "answers": {
+        "a": "To reduce image size",
+        "b": "To normalize dataset images",
+        "c": "To detect edges in images",
+        "d": "To convert outputs into probabilities over classes"
+      },
+      "explanations": {
+        "a": "Incorrect because pooling is mainly used for reducing spatial size.",
+        "b": "Incorrect because normalization is a preprocessing step, not Softmax.",
+        "c": "Incorrect because convolution layers learn edge detectors.",
+        "d": "Correct because Softmax outputs a probability distribution across multiple classes."
+      },
+      "correctAnswer": "d",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Negative Transfer occurs when:",
+      "answers": {
+        "a": "Transfer improves accuracy strongly",
+        "b": "Only classifier layer is trained",
+        "c": "Learning rate is small",
+        "d": "Transfer from an unrelated source reduces target task performance"
+      },
+      "explanations": {
+        "a": "Incorrect because this is positive transfer.",
+        "b": "Incorrect because this does not necessarily cause negative transfer.",
+        "c": "Incorrect because small learning rate usually stabilizes training.",
+        "d": "Correct because irrelevant transferred knowledge harms target learning."
+      },
+      "correctAnswer": "d",
       "difficulty": "beginner"
     }
   ]
