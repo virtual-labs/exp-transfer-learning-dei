@@ -112,7 +112,7 @@
         "d": "Accuracy and loss curves"
       },
       "explanations": {
-        "a": "Incorrect because file names do not show training behavior.",
+        "a": "Incorrect because file names do not show training behaviour.",
         "b": "Incorrect because random scatter plots do not reflect model learning.",
         "c": "Incorrect because confusion matrix is useful after predictions, not before training.",
         "d": "Correct because these curves show learning progress and generalization issues."

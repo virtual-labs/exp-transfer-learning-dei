@@ -60,7 +60,7 @@ function getCurrentData() {
 
 function downloadExperiment() {
     const link = document.createElement('a');
-    link.href = './assets/Transfer Learning with Deep CNNs.pdf';
+    link.href = './assets/Exp-5_ Transfer_ Learnig.pdf';
     link.download = 'Transfer_Learning_Experiment.pdf';
     document.body.appendChild(link);
     link.click();
@@ -126,6 +126,10 @@ function updateCodeDisplay() {
                 const unfreezeValue = (parseInt(state.freeze) / 100).toFixed(2);
                 code = code.replace(/set_trainable_layers\(base_model,\s*[\d.]+\)/, 
                     `set_trainable_layers(base_model, ${unfreezeValue})`);
+                
+                // Replace the comment
+                code = code.replace(/# Unfreeze last \d+(\.\d+)?% of layers/, 
+                    `# Unfreeze last ${state.freeze}% of layers`);
             }
             
             block.textContent = code;
@@ -276,7 +280,7 @@ async function populateOutput(stepNum) {
             let truncatedTraining = '';
             if (trainingLines.length > 30) {
                 truncatedTraining = trainingLines.slice(0, 15).join('\n') + 
-                    '\n\n... (training in progress) ...\n\n' + 
+                    '\n\n...\n\n' + 
                     trainingLines.slice(-10).join('\n');
             } else {
                 truncatedTraining = trainingOutput;

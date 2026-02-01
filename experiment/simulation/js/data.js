@@ -45,7 +45,7 @@ const EXPERIMENT_DATA = {
         ]
       },
       {
-        "code": "# not to be written in code cell (in ppt), for our reference only\n\nfrom sklearn.metrics import confusion_matrix\ncm = confusion_matrix(y_true, y_pred)\n\nplt.figure(figsize=(30, 30))\nsns.heatmap(cm, cmap=\"Blues\", annot=True, fmt='d',\n            xticklabels=class_names, yticklabels=class_names,)\nplt.xlabel(\"Predicted\")\nplt.ylabel(\"True\")\nplt.title(\"Confusion Matrix\")\nplt.tight_layout()\nplt.show()",
+        "code": "# plotting confusion matrix\n\nfrom sklearn.metrics import confusion_matrix\ncm = confusion_matrix(y_true, y_pred)\n\nplt.figure(figsize=(30, 30))\nsns.heatmap(cm, cmap=\"Blues\", annot=True, fmt='d',\n            xticklabels=class_names, yticklabels=class_names,)\nplt.xlabel(\"Predicted\")\nplt.ylabel(\"True\")\nplt.title(\"Confusion Matrix\")\nplt.tight_layout()\nplt.show()",
         "outputs": []
       }
     ]
@@ -91,7 +91,7 @@ const EXPERIMENT_DATA = {
         ]
       },
       {
-        "code": "# not to be written in code cell (in ppt), for our reference only\n\nfrom sklearn.metrics import confusion_matrix\ncm = confusion_matrix(y_true, y_pred)\n\nplt.figure(figsize=(30, 30))\nsns.heatmap(cm, cmap=\"Blues\", annot=True, fmt='d',\n            xticklabels=class_names, yticklabels=class_names,)\nplt.xlabel(\"Predicted\")\nplt.ylabel(\"True\")\nplt.title(\"Confusion Matrix\")\nplt.tight_layout()\nplt.show()",
+        "code": "# plotting confusion matrix\n\nfrom sklearn.metrics import confusion_matrix\ncm = confusion_matrix(y_true, y_pred)\n\nplt.figure(figsize=(30, 30))\nsns.heatmap(cm, cmap=\"Blues\", annot=True, fmt='d',\n            xticklabels=class_names, yticklabels=class_names,)\nplt.xlabel(\"Predicted\")\nplt.ylabel(\"True\")\nplt.title(\"Confusion Matrix\")\nplt.tight_layout()\nplt.show()",
         "outputs": []
       }
     ]
@@ -137,7 +137,7 @@ const EXPERIMENT_DATA = {
         ]
       },
       {
-        "code": "# not to be written in code cell (in ppt), for our reference only\n\nfrom sklearn.metrics import confusion_matrix\ncm = confusion_matrix(y_true, y_pred)\n\nplt.figure(figsize=(30, 30))\nsns.heatmap(cm, cmap=\"Blues\", annot=True, fmt='d',\n            xticklabels=class_names, yticklabels=class_names,)\nplt.xlabel(\"Predicted\")\nplt.ylabel(\"True\")\nplt.title(\"Confusion Matrix\")\nplt.tight_layout()\nplt.show()",
+        "code": "# plotting confusion matrix\n\nfrom sklearn.metrics import confusion_matrix\ncm = confusion_matrix(y_true, y_pred)\n\nplt.figure(figsize=(30, 30))\nsns.heatmap(cm, cmap=\"Blues\", annot=True, fmt='d',\n            xticklabels=class_names, yticklabels=class_names,)\nplt.xlabel(\"Predicted\")\nplt.ylabel(\"True\")\nplt.title(\"Confusion Matrix\")\nplt.tight_layout()\nplt.show()",
         "outputs": []
       }
     ]
@@ -184,7 +184,7 @@ const EXPERIMENT_DATA = {
         ]
       },
       {
-        "code": "# not to be written in code cell (in ppt), for our reference only\n\nfrom sklearn.metrics import confusion_matrix\ncm = confusion_matrix(y_true, y_pred)\n\nplt.figure(figsize=(30, 30))\nsns.heatmap(cm, cmap=\"Blues\", annot=True, fmt='d',\n            xticklabels=class_names, yticklabels=class_names,)\nplt.xlabel(\"Predicted\")\nplt.ylabel(\"True\")\nplt.title(\"Confusion Matrix\")\nplt.tight_layout()\nplt.show()",
+        "code": "# plotting confusion matrix\n\nfrom sklearn.metrics import confusion_matrix\ncm = confusion_matrix(y_true, y_pred)\n\nplt.figure(figsize=(30, 30))\nsns.heatmap(cm, cmap=\"Blues\", annot=True, fmt='d',\n            xticklabels=class_names, yticklabels=class_names,)\nplt.xlabel(\"Predicted\")\nplt.ylabel(\"True\")\nplt.title(\"Confusion Matrix\")\nplt.tight_layout()\nplt.show()",
         "outputs": []
       }
     ]
@@ -231,7 +231,7 @@ const EXPERIMENT_DATA = {
         ]
       },
       {
-        "code": "# not to be written in code cell (in ppt), for our reference only\n\nfrom sklearn.metrics import confusion_matrix\ncm = confusion_matrix(y_true, y_pred)\n\nplt.figure(figsize=(30, 30))\nsns.heatmap(cm, cmap=\"Blues\", annot=True, fmt='d',\n            xticklabels=class_names, yticklabels=class_names,)\nplt.xlabel(\"Predicted\")\nplt.ylabel(\"True\")\nplt.title(\"Confusion Matrix\")\nplt.tight_layout()\nplt.show()",
+        "code": "# plotting confusion matrix\n\nfrom sklearn.metrics import confusion_matrix\ncm = confusion_matrix(y_true, y_pred)\n\nplt.figure(figsize=(30, 30))\nsns.heatmap(cm, cmap=\"Blues\", annot=True, fmt='d',\n            xticklabels=class_names, yticklabels=class_names,)\nplt.xlabel(\"Predicted\")\nplt.ylabel(\"True\")\nplt.title(\"Confusion Matrix\")\nplt.tight_layout()\nplt.show()",
         "outputs": []
       }
     ]
@@ -278,7 +278,7 @@ const EXPERIMENT_DATA = {
         ]
       },
       {
-        "code": "# not to be written in code cell (in ppt), for our reference only\n\nfrom sklearn.metrics import confusion_matrix\ncm = confusion_matrix(y_true, y_pred)\n\nplt.figure(figsize=(30, 30))\nsns.heatmap(cm, cmap=\"Blues\", annot=True, fmt='d',\n            xticklabels=class_names, yticklabels=class_names,)\nplt.xlabel(\"Predicted\")\nplt.ylabel(\"True\")\nplt.title(\"Confusion Matrix\")\nplt.tight_layout()\nplt.show()",
+        "code": "# plotting confusion matrix\n\nfrom sklearn.metrics import confusion_matrix\ncm = confusion_matrix(y_true, y_pred)\n\nplt.figure(figsize=(30, 30))\nsns.heatmap(cm, cmap=\"Blues\", annot=True, fmt='d',\n            xticklabels=class_names, yticklabels=class_names,)\nplt.xlabel(\"Predicted\")\nplt.ylabel(\"True\")\nplt.title(\"Confusion Matrix\")\nplt.tight_layout()\nplt.show()",
         "outputs": []
       }
     ]
@@ -557,7 +557,7 @@ y_pred = np.array(y_pred)
 
 print("\\nClassification Report:")
 print(classification_report(y_true, y_pred, target_names=class_names, zero_division=0))`,
-        cell6: `# not to be written in code cell (in ppt), for our reference only
+        cell6: `# plotting confusion matrix
 
 from sklearn.metrics import confusion_matrix
 cm = confusion_matrix(y_true, y_pred)
@@ -840,7 +840,7 @@ y_pred = np.array(y_pred)
 
 print("\\nClassification Report:")
 print(classification_report(y_true, y_pred, target_names=class_names, zero_division=0))`,
-        cell6: `# not to be written in code cell (in ppt), for our reference only
+        cell6: `# plotting confusion matrix
 
 from sklearn.metrics import confusion_matrix
 cm = confusion_matrix(y_true, y_pred)

@@ -43,21 +43,22 @@ Transfer learning aims to improve the target predictive function *f<sub>T</sub>(
 This means:
 - The domains may have different feature spaces or distributions
 - The tasks may have different label spaces or predictive distributions
-- When both domains and tasks are the same, the learning becomes a traditional machine learning problem.
+
+When both domains and tasks are the same, the learning becomes a traditional machine learning problem.
 
 ---
 
 #### Homogeneous vs Heterogeneous Transfer Learning
 
-**Homogeneous Transfer Learning**
+**Homogeneous Transfer Learning:**
 Homogeneous Transfer Learning refers to a type of transfer learning in which the source domain and target domain share the same or highly similar feature representation. In this case, the input data from both domains lies in an overlapping feature space, meaning that the source and target datasets are represented in a comparable manner. This type of transfer learning is widely applied in practical scenarios where the domains involve similar kinds of data, such as transferring knowledge from one image dataset to another image dataset (image → image).
 
-**Heterogeneous Transfer Learning**
+**Heterogeneous Transfer Learning:**
 Heterogeneous Transfer Learning is a more complex form of transfer learning in which the feature representation of the source domain and target domain is different. Here, the datasets are described using different feature spaces, making direct transfer difficult. Since the representations do not overlap, it becomes necessary to apply feature mapping or transformation techniques to build a relationship between the source and target domains. Due to the mismatch in feature spaces, heterogeneous transfer learning is considered more challenging compared to homogeneous transfer learning and requires additional processing steps to align or bridge the domains effectively.
 
 ---
 
-#### Deep CNNs and Transfer Learning
+#### Deep CNNs
 
 Convolutional neural networks or CNNs, are a specialized kind of neural network for processing data that has a known, grid-like topology. Examples include time-series data, which can be thought of as a 1D grid taking samples at regular time intervals, and image data, which can be thought of as a 2D grid of pixels. Convolutional networks have been tremendously successful in practical applications. The name "convolutional neural network" indicates that the network employs a mathematical operation called convolution. Convolution is a specialized kind of linear operation. Convolutional networks are simply neural networks that use convolution in place of general matrix multiplication in at least one of their layers.
 
