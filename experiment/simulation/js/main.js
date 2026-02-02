@@ -112,6 +112,20 @@ function updateCodeDisplay() {
         return;
     }
     
+    // Learning rate mapping based on model and freeze percentage
+    const learningRates = {
+        mobilenetv2: {
+            '0': '1e-4',
+            '10': '1e-5',
+            '20': '1e-5'
+        },
+        vgg19: {
+            '0': '1e-4',
+            '20': '1e-5',
+            '30': '1e-5'
+        }
+    };
+    
     // Update all code blocks with the model-specific code
     const codeBlocks = document.querySelectorAll('.cell-code pre code');
     
@@ -120,15 +134,23 @@ function updateCodeDisplay() {
         if (templates[cellKey]) {
             let code = templates[cellKey];
             
-            // Update the unfreeze percentage in cell 3 (training cell)
+            // Update cell 1 (parameters cell) - learning rate
+            if (index === 1) {
+                const lr = learningRates[state.model][state.freeze];
+                if (lr) {
+                    code = code.replace(/learning_rate = [\de.-]+/, `learning_rate = ${lr}`);
+                }
+            }
+            
+            // Update cell 3 (training cell) - unfreeze percentage
             if (index === 3) {
-                // Replace the unfreeze percentage
+                // Replace the unfreeze percentage value in the function call
                 const unfreezeValue = (parseInt(state.freeze) / 100).toFixed(2);
                 code = code.replace(/set_trainable_layers\(base_model,\s*[\d.]+\)/, 
                     `set_trainable_layers(base_model, ${unfreezeValue})`);
                 
-                // Replace the comment
-                code = code.replace(/# Unfreeze last \d+(\.\d+)?% of layers/, 
+                // Replace the comment above the set_trainable_layers call
+                code = code.replace(/# Unfreeze last \d+% of layers/, 
                     `# Unfreeze last ${state.freeze}% of layers`);
             }
             
@@ -442,9 +464,11 @@ function handleFreezeChange(e) {
         state.freeze = newFreeze;
         updateCodeDisplay();
         
-        // Reset if any step after step 1 was completed (model training depends on freeze)
-        if (state.completedSteps.has(4) || state.completedSteps.has(5) || 
-            state.completedSteps.has(6) || state.completedSteps.has(7)) {
+        // Reset if cell 1 (parameters) or any training-related steps were completed
+        // Since learning rate changes with freeze percentage
+        if (state.completedSteps.has(1) || state.completedSteps.has(4) || 
+            state.completedSteps.has(5) || state.completedSteps.has(6) || 
+            state.completedSteps.has(7)) {
             resetSimulation();
         }
     }
