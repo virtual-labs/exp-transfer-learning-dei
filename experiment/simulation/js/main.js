@@ -285,7 +285,7 @@ async function populateOutput(stepNum) {
             const datasetOutput = cellData.outputs.join('\n');
             // Truncate class mapping to first 20 classes
             const lines = datasetOutput.split('\n');
-            const truncatedOutput = lines.slice(0, 30).join('\n') + '\n... (showing first 24 of 102 classes)\n\nShowing random sample images from the dataset...';
+            const truncatedOutput = lines.slice(0, 30).join('\n') + '\n... (showing 24 of 102 classes)\n\nShowing random sample images from the dataset...';
             await typeText('output3', truncatedOutput);
             
             // Show sample image
