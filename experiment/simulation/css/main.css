@@ -650,9 +650,10 @@ body {
 
 /* Confusion Matrix Image (Step 7) */
 .cell-output img#confusionMatrixImage {
-    max-height: 90px;
-    width: auto;
-    max-width: 100%;
+    max-height: none;
+    width: 90%;
+    max-width: 1200px;
+    height: auto;
     background: white;
     padding: var(--spacing-sm);
 }
