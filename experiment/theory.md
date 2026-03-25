@@ -10,37 +10,41 @@ Semi-supervised learning attempts to reduce data requirements by using unlabelle
 
 #### Domain and Task Definitions (Formal Notation)
 
-**Domain ($\mathcal{D}$)**
+**Domain ($D$)**
 
 A domain consists of:
-- A feature space $\mathcal{X}$
+- A feature space $X$
 - A marginal distribution $P(x)$
 
 So, a domain is:
 
-$$\mathcal{D} = \{\mathcal{X},\, P(x)\}$$
+$$D = \{X, P(x)\}$$
 
-**Task ($\mathcal{T}$)**
+**Task ($T$)**
 
 A task consists of:
-- A label space $\mathcal{Y}$
-- A predictive function $f(\cdot)$
+- A label space $Y$
+- A predictive function $f$, which maps the feature space $X$ to the label space $Y$, i.e.,
 
-So, a task is:
+$$f: X \rightarrow Y$$
 
-$$\mathcal{T} = \{\mathcal{Y},\, f(\cdot)\}$$
+where $X$ represents the feature space and $Y$ represents the label space.
+
+So, a task is defined as:
+
+$$T = \{Y, f(\cdot)\}$$
 
 ---
 
 #### Transfer Learning Definition
 
 Given:
-- Source domain *D<sub>S</sub>* and task *T<sub>S</sub>*
-- Target domain *D<sub>T</sub>* and task *T<sub>T</sub>*
+- Source domain $D_S$ and task $T_S$
+- Target domain $D_T$ and task $T_T$
 
-Transfer learning aims to improve the target predictive function $f_T(\cdot)$ in $\mathcal{D}_T$ using the knowledge from $\mathcal{D}_S$ and $\mathcal{T}_S$, where:
+Transfer learning aims to improve the target predictive function $f_T(\cdot)$ in $D_T$ using the knowledge from $D_S$ and $T_S$, where:
 
-$$\mathcal{D}_S \neq \mathcal{D}_T \quad \text{or} \quad \mathcal{T}_S \neq \mathcal{T}_T$$
+$$D_S \neq D_T \text{ or } T_S \neq T_T$$
 
 This means:
 - The domains may have different feature spaces or distributions
