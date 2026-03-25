@@ -2,7 +2,7 @@
   "version": 2.0,
   "questions": [
     {
-      "question": "What is Transfer Learning?",
+      "question": "1. What is Transfer Learning?",
       "answers": {
         "a": "Training a CNN model from scratch every time",
         "b": "Using a pretrained model for a new related task",
@@ -19,7 +19,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "Why is Transfer Learning useful for small datasets?",
+      "question": "2. Why is Transfer Learning useful for small datasets?",
       "answers": {
         "a": "It increases the number of classes automatically",
         "b": "It removes the need for training",
@@ -36,7 +36,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "Which large dataset is commonly used to pretrain deep CNN models?",
+      "question": "3. Which large dataset is commonly used to pretrain deep CNN models?",
       "answers": {
         "a": "MNIST",
         "b": "ImageNet",
@@ -53,7 +53,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "Which of the following is a lightweight pretrained CNN model?",
+      "question": "4. Which of the following is a lightweight pretrained CNN model?",
       "answers": {
         "a": "MobileNet",
         "b": "VGG19",
@@ -70,7 +70,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "In Transfer Learning, “freezing layers” means:",
+      "question": "5. In Transfer Learning, \u201cfreezing layers\u201d means:",
       "answers": {
         "a": "Removing layers from the model",
         "b": "Preventing weight updates during training",
@@ -87,7 +87,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "The early layers of a CNN generally learn:",
+      "question": "6. The early layers of a CNN generally learn:",
       "answers": {
         "a": "Very complex object-specific patterns",
         "b": "Only flower names",
@@ -104,7 +104,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "Fine-tuning in Transfer Learning refers to:",
+      "question": "7. Fine-tuning in Transfer Learning refers to:",
       "answers": {
         "a": "Training the entire CNN model from scratch",
         "b": "Retraining some pretrained layers on the target dataset",
@@ -121,7 +121,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "Transfer learning works best when:",
+      "question": "8. Transfer learning works best when:",
       "answers": {
         "a": "Target task has limited training data and a related pretrained model is available",
         "b": "Target task always has unlimited data",
@@ -138,7 +138,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "Which layer is commonly used to reduce spatial dimensions in CNNs?",
+      "question": "9. Which layer is commonly used to reduce spatial dimensions in CNNs?",
       "answers": {
         "a": "Pooling layer",
         "b": "Dense layer",
@@ -155,7 +155,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "What is a major risk when transferring from an unrelated source dataset?",
+      "question": "10. What is a major risk when transferring from an unrelated source dataset?",
       "answers": {
         "a": "Faster training always occurs",
         "b": "Negative Transfer",

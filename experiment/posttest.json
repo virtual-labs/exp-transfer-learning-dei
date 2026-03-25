@@ -2,7 +2,7 @@
   "version": 2.0,
   "questions": [
     {
-      "question": "What is the main purpose of unfreezing the last layers in Transfer Learning?",
+      "question": "1. What is the main purpose of unfreezing the last layers in Transfer Learning?",
       "answers": {
         "a": "To allow the model to adapt high-level features to the target dataset",
         "b": "To permanently delete the pretrained backbone",
@@ -19,7 +19,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "If training accuracy is very high but validation accuracy is low, it indicates:",
+      "question": "2. If training accuracy is very high but validation accuracy is low, it indicates:",
       "answers": {
         "a": "Perfect model performance",
         "b": "Underfitting",
@@ -36,7 +36,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "Why is a smaller learning rate preferred during fine-tuning?",
+      "question": "3. Why is a smaller learning rate preferred during fine-tuning?",
       "answers": {
         "a": "To increase memory usage",
         "b": "To avoid large weight updates that can damage pretrained features",
@@ -53,7 +53,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "In MobileNetV2, base freeze means:",
+      "question": "4. In MobileNetV2, base freeze means:",
       "answers": {
         "a": "Training the entire model from scratch",
         "b": "Freezing all backbone layers and training only the added classifier layers",
@@ -70,7 +70,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "Unfreezing 20% of the last layers mainly helps in:",
+      "question": "5. Unfreezing 20% of the last layers mainly helps in:",
       "answers": {
         "a": "Learning only basic edges and textures",
         "b": "Increasing batch size automatically",
@@ -87,7 +87,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "Which pretrained model is generally more computationally heavy?",
+      "question": "6. Which pretrained model is generally more computationally heavy?",
       "answers": {
         "a": "VGG19",
         "b": "MobileNetV2",
@@ -104,7 +104,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "Which plot best helps in checking training performance and overfitting?",
+      "question": "7. Which plot best helps in checking training performance and overfitting?",
       "answers": {
         "a": "Histogram of file names",
         "b": "Scatter plot of random points",
@@ -121,7 +121,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "If validation loss increases while training loss decreases, it usually means:",
+      "question": "8. If validation loss increases while training loss decreases, it usually means:",
       "answers": {
         "a": "The model is underfitting",
         "b": "The model is generalizing perfectly",
@@ -138,7 +138,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "What is the purpose of the Softmax layer in CNN classification?",
+      "question": "9. What is the purpose of the Softmax layer in CNN classification?",
       "answers": {
         "a": "To reduce image size",
         "b": "To normalize dataset images",
@@ -155,7 +155,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "Negative Transfer occurs when:",
+      "question": "10. Negative Transfer occurs when:",
       "answers": {
         "a": "Transfer improves accuracy strongly",
         "b": "Only classifier layer is trained",

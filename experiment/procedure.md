@@ -32,6 +32,7 @@ Initialize the Python environment and import the required libraries such as Tens
 **Step 2: Load the Dataset**
 - Load the **Oxford Flowers** dataset and organize it into training and validation sets.
 - Perform required preprocessing such as resizing images to a fixed input size supported by pretrained models (e.g., 224×224) and normalizing pixel values.
+  - **Normalization:** Pixel values (originally in the range [0, 255]) are rescaled to [0, 1] by dividing by 255, and then further standardized using the **per-channel mean and standard deviation** computed from the ImageNet training set: mean = [0.485, 0.456, 0.406] and std = [0.229, 0.224, 0.225] (for R, G, B channels respectively). This standardization aligns the input distribution with what the pretrained backbone expects, since VGG19 and MobileNetV2 were trained on ImageNet with these statistics. The normalized pixel value for channel $c$ is: $x'_c = (x_c / 255 - \mu_c) / \sigma_c$.
 
 **Step 3: Apply Data Augmentation (If Used)**
 Apply image augmentation techniques such as rotation, zoom, flipping, and shifting to improve model generalization and reduce overfitting on limited data.

@@ -10,23 +10,25 @@ Semi-supervised learning attempts to reduce data requirements by using unlabelle
 
 #### Domain and Task Definitions (Formal Notation)
 
-**Domain (D)**
+**Domain ($\mathcal{D}$)**
 
 A domain consists of:
-- A feature space *X*
-- A marginal distribution *P(x)*
+- A feature space $\mathcal{X}$
+- A marginal distribution $P(x)$
 
 So, a domain is:
-**D = {X, P(x)}**
 
-**Task (T)**
+$$\mathcal{D} = \{\mathcal{X},\, P(x)\}$$
+
+**Task ($\mathcal{T}$)**
 
 A task consists of:
-- A label space *Y*
-- A predictive function *f(·)*
+- A label space $\mathcal{Y}$
+- A predictive function $f(\cdot)$
 
 So, a task is:
-**T = {Y, f(·)}**
+
+$$\mathcal{T} = \{\mathcal{Y},\, f(\cdot)\}$$
 
 ---
 
@@ -36,9 +38,9 @@ Given:
 - Source domain *D<sub>S</sub>* and task *T<sub>S</sub>*
 - Target domain *D<sub>T</sub>* and task *T<sub>T</sub>*
 
-Transfer learning aims to improve the target predictive function *f<sub>T</sub>(·)* in *D<sub>T</sub>* using the knowledge from *D<sub>S</sub>* and *T<sub>S</sub>*, where:
+Transfer learning aims to improve the target predictive function $f_T(\cdot)$ in $\mathcal{D}_T$ using the knowledge from $\mathcal{D}_S$ and $\mathcal{T}_S$, where:
 
-**D<sub>S</sub> ≠ D<sub>T</sub> or T<sub>S</sub> ≠ T<sub>T</sub>**
+$$\mathcal{D}_S \neq \mathcal{D}_T \quad \text{or} \quad \mathcal{T}_S \neq \mathcal{T}_T$$
 
 This means:
 - The domains may have different feature spaces or distributions
