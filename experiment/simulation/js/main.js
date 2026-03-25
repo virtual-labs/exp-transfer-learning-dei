@@ -60,7 +60,7 @@ function getCurrentData() {
 
 function downloadExperiment() {
     const link = document.createElement('a');
-    link.href = './assets/Exp-5_ Transfer_ Learnig.pdf';
+    link.href = './assets/Exp_5_Transfer_Learnig.pdf';
     link.download = 'Transfer_Learning_Experiment.pdf';
     document.body.appendChild(link);
     link.click();
