@@ -5,3 +5,5 @@
 2. Q. Yang, Y. Zhang, W. Dai, and S. J. Pan, *Transfer Learning*, Cambridge: Cambridge University Press, 2020.
 
 3. K. Simonyan and A. Zisserman, "Very deep convolutional networks for large-scale image recognition," *International Conference on Learning Representations (ICLR)*, 2015.
+
+4. S. J. Pan and Q. Yang, “A Survey on Transfer Learning,” IEEE Transactions on Knowledge and Data Engineering, vol. 22, no. 10, pp. 1345–1359, 2010.

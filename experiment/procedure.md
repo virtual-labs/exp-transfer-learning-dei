@@ -83,7 +83,7 @@ After training, plot graphs for quick comparison:
 - Accuracy vs Epochs
 - Loss vs Epochs
 
-This provides a clear understanding of model learning behavior under different freezing/unfreezing configurations.
+This provides a clear understanding of model learning behaviour under different freezing/unfreezing configurations.
 
 **Step 10: Compare Results Across Configurations**
 Compare all experimental results for:

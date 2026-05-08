@@ -5,17 +5,17 @@
       "question": "1. What is Transfer Learning?",
       "answers": {
         "a": "Training a CNN model from scratch every time",
-        "b": "Using a pretrained model for a new related task",
+        "b": "Removing convolution layers permanently",
         "c": "Using only test data for training",
-        "d": "Removing convolution layers permanently"
+        "d": "Using a pretrained model for a new related task"
       },
       "explanations": {
         "a": "Incorrect because transfer learning reuses knowledge from an already trained model instead of starting from zero.",
-        "b": "Correct because transfer learning applies knowledge learned from a source dataset to improve learning on a target dataset.",
+        "b": "Incorrect because transfer learning does not require removing layers; it mainly reuses or fine-tunes them.",
         "c": "Incorrect because test data is not used for training in standard machine learning practice.",
-        "d": "Incorrect because transfer learning does not require removing layers; it mainly reuses or fine-tunes them."
+        "d": "Correct because transfer learning applies knowledge learned from a source dataset to improve learning on a target dataset."
       },
-      "correctAnswer": "b",
+      "correctAnswer": "d",
       "difficulty": "beginner"
     },
     {
@@ -140,18 +140,18 @@
     {
       "question": "9. Which layer is commonly used to reduce spatial dimensions in CNNs?",
       "answers": {
-        "a": "Pooling layer",
+        "a": "Softmax layer",
         "b": "Dense layer",
         "c": "Dropout layer",
-        "d": "Softmax layer"
+        "d": "Pooling layer"
       },
       "explanations": {
-        "a": "Correct because pooling reduces width and height while keeping important information.",
+        "a": "Incorrect because Softmax is used for classification output, not dimension reduction.",
         "b": "Incorrect because dense layers work on flattened vectors, not spatial reduction.",
         "c": "Incorrect because dropout prevents overfitting but does not reduce spatial dimensions directly.",
-        "d": "Incorrect because Softmax is used for classification output, not dimension reduction."
+        "d": "Correct because pooling reduces width and height while keeping important information."
       },
-      "correctAnswer": "a",
+      "correctAnswer": "d",
       "difficulty": "beginner"
     },
     {

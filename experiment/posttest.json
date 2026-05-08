@@ -87,20 +87,20 @@
       "difficulty": "beginner"
     },
     {
-      "question": "6. Which pretrained model is generally more computationally heavy?",
+      "question": "6. Which pretrained CNN model generally requires higher computational resources during transfer learning?",
       "answers": {
-        "a": "VGG19",
-        "b": "MobileNetV2",
-        "c": "KNN",
-        "d": "Naive Bayes"
+        "a": "MobileNetV2",
+        "b": "EfficientNetB0",
+        "c": "ResNet50",
+        "d": "VGG19"
       },
       "explanations": {
-        "a": "Correct because VGG19 has many parameters and requires higher computation.",
-        "b": "Incorrect because it is designed to be lightweight and efficient.",
-        "c": "Incorrect because KNN is not a deep CNN model.",
-        "d": "Incorrect because it is not a CNN architecture."
+        "a": "Incorrect because MobileNetV2 is designed as a lightweight and efficient CNN architecture for mobile and low-resource devices.",
+        "b": "Incorrect because EfficientNetB0 is optimized to achieve good accuracy with fewer parameters and lower computation compared to heavier CNN models.",
+        "c": "Incorrect because although ResNet50 is deeper and computationally heavier than MobileNetV2, it is still generally less resource-intensive than VGG19.",
+        "d": "Correct because VGG19 contains a very large number of parameters and convolutional layers, making it computationally expensive in terms of memory and training time."
       },
-      "correctAnswer": "a",
+      "correctAnswer": "d",
       "difficulty": "beginner"
     },
     {
