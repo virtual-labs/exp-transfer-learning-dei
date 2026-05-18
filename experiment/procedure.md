@@ -83,11 +83,11 @@ After training, plot graphs for quick comparison:
 - Accuracy vs Epochs
 - Loss vs Epochs
 
-This provides a clear understanding of model learning behaviour under different freezing/unfreezing configurations.
+This provides a clear understanding of model learning behavior under different freezing/unfreezing configurations.
 
 **Step 10: Compare Results Across Configurations**
 Compare all experimental results for:
-- MobileNetV2: Base Freeze vs 10% vs 20% unfreeze
+- MobileNetV2: Base Freeze vs 10% vs 20% unfreeze.
 - VGG19: Base Freeze vs 20% vs 30% unfreeze
 
 Analyze which combination gives better accuracy and stable loss.

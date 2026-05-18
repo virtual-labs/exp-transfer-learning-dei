@@ -11,7 +11,7 @@
       },
       "explanations": {
         "a": "Correct because deeper layers capture complex task-specific patterns, so unfreezing them improves adaptation to the new dataset.",
-        "b": "Incorrect because transfer learning uses the pretrained backbone, it does not delete it.",
+        "b": "Incorrect because transfer learning uses the pretrained backbone; it does not delete it.",
         "c": "Incorrect because unfreezing layers is done to enable learning, not to stop it.",
         "d": "Incorrect because unfreezing layers does not increase dataset size."
       },
@@ -112,9 +112,9 @@
         "d": "Accuracy and loss curves"
       },
       "explanations": {
-        "a": "Incorrect because file names do not show training behaviour.",
+        "a": "Incorrect because file names do not show training behavior.",
         "b": "Incorrect because random scatter plots do not reflect model learning.",
-        "c": "Incorrect because confusion matrix is useful after predictions, not before training.",
+        "c": "Incorrect because a confusion matrix is useful after predictions, not before training.",
         "d": "Correct because these curves show learning progress and generalization issues."
       },
       "correctAnswer": "d",
@@ -131,7 +131,7 @@
       "explanations": {
         "a": "Incorrect because underfitting means training loss is also high.",
         "b": "Incorrect because increasing validation loss indicates poor generalization.",
-        "c": "Correct because the model fits training data well but performs worse on unseen validation data.",
+        "c": "Correct because the model fits the training data well but performs worse on unseen validation data.",
         "d": "Incorrect because training cannot proceed properly without images."
       },
       "correctAnswer": "c",
@@ -158,12 +158,12 @@
       "question": "10. Negative Transfer occurs when:",
       "answers": {
         "a": "Transfer improves accuracy strongly",
-        "b": "Only classifier layer is trained",
+        "b": "Only the classifier layer is trained",
         "c": "Learning rate is small",
         "d": "Transfer from an unrelated source reduces target task performance"
       },
       "explanations": {
-        "a": "Incorrect because this is positive transfer.",
+        "a": "Incorrect because this is a positive transfer.",
         "b": "Incorrect because this does not necessarily cause negative transfer.",
         "c": "Incorrect because small learning rate usually stabilizes training.",
         "d": "Correct because irrelevant transferred knowledge harms target learning."
