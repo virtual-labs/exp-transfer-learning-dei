@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transfer Learning Virtual Lab</title>
+    <meta name="description"
+        content="Interactive virtual lab simulating Transfer Learning with VGG19 and MobileNetV2 on the Oxford 102 Flowers dataset.">
+    <link rel="stylesheet" href="css/simulations.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+</head>
+
+<body>
+    <!-- Tab Navigation -->
+    <nav class="tab-navigation">
+        <div class="logo">Transfer Learning <span>Simulator</span></div>
+        <button class="tab-btn active" data-tab="sim1">1. Architecture</button>
+        <button class="tab-btn" data-tab="sim2">2. Features</button>
+        <button class="tab-btn" data-tab="sim3">3. Dynamics</button>
+        <button class="tab-btn" data-tab="sim4">4. Embeddings</button>
+        <button class="tab-btn" data-tab="sim5">5. Gradients</button>
+        <button class="tab-btn" data-tab="sim6">6. Strategy</button>
+        <a href="../index.html" class="btn-back">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 12H5" />
+                <path d="M12 19l-7-7 7-7" />
+            </svg>
+            Back to Home
+        </a>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+
+        <!-- ─── SIM 1: Architecture Pipeline ─── -->
+        <div id="sim1" class="tab-content active">
+            <div class="sim-layout">
+                <aside class="sim-sidebar glass-panel">
+                    <h2>Pipeline Flow</h2>
+                    <p>See how an input image is processed through each layer of a deep CNN before reaching the
+                        classifier.</p>
+
+                    <h3>Key Concepts</h3>
+                    <div class="observe-box glass-panel">
+                        <ul>
+                            <li><strong>Forward Pass:</strong> Data flows input → conv blocks → pooling → classifier.
+                            </li>
+                            <li><strong>Frozen Layers (🔒):</strong> Weights are fixed; they preserve ImageNet features.
+                            </li>
+                            <li><strong>Trainable Layers (🔓):</strong> Weights update during fine-tuning.</li>
+                            <li><strong>VGG19:</strong> 22 Keras layers (16 Conv2D), 20.2M params (base + head).</li>
+                            <li><strong>MobileNetV2:</strong> 154 layers, 3.0M params (base + head), depthwise blocks.
+                            </li>
+                        </ul>
+                    </div>
+
+                    <h3>How to Use</h3>
+                    <div class="observe-box glass-panel">
+                        <ul>
+                            <li>Select a <strong>Model</strong> (VGG19 or MobileNetV2)</li>
+                            <li>Adjust the <strong>Freeze %</strong> slider to control how many layers are frozen</li>
+                            <li>Pick a <strong>Flower Image</strong> and click <strong>Start Forward Pass</strong></li>
+                            <li>Watch the signal propagate through frozen (gray) and trainable (purple) blocks</li>
+                        </ul>
+                    </div>
+                </aside>
+
+                <div class="sim-main">
+                    <div class="sim-header">
+                        <div class="header-text">
+                            <h2>Simulation 1: Neural Architecture Pipeline</h2>
+                            <p class="sim-desc">Select a base model and observe the feature extraction pipeline. Watch
+                                how
+                                high-level features are distilled from raw pixels.</p>
+                        </div>
+                        <div class="header-actions">
+                            <button class="btn-reset" id="sim1-reset">↺ Reset</button>
+                        </div>
+                    </div>
+                    <div class="sim-body">
+                        <div class="controls-row">
+                            <div class="control-group">
+                                <label>Model</label>
+                                <select id="sim1-model">
+                                    <option value="vgg19">VGG19</option>
+                                    <option value="mobilenet">MobileNetV2</option>
+                                </select>
+                            </div>
+                            <div class="control-group">
+                                <label>Freeze: <span id="sim1-freeze-val">70%</span></label>
+                                <input type="range" id="sim1-freeze" min="0" max="100" value="70" step="5">
+                            </div>
+                            <div class="control-group">
+                                <label>Flower Image</label>
+                                <select id="sim1-flower">
+                                    <option value="rose">Rose</option>
+                                    <option value="sunflower">Sunflower</option>
+                                    <option value="lotus">Lotus</option>
+                                    <option value="marigold">Marigold</option>
+                                    <option value="bougainvillea">Bougainvillea</option>
+                                </select>
+                            </div>
+                            <button class="btn-primary" id="sim1-start">▶ Start Forward Pass</button>
+                        </div>
+                        <div class="viz-container" id="sim1-viz">
+                            <div class="arch-pipeline" id="sim1-pipeline"></div>
+                            <!-- Progress bar for forward pass -->
+                            <div class="sim1-progress-wrap" id="sim1-progress-wrap" style="display:none">
+                                <div class="sim1-progress-bar" id="sim1-progress-bar"></div>
+                                <span class="sim1-progress-label" id="sim1-progress-label">0%</span>
+                            </div>
+                            <!-- Layer tooltip on hover -->
+                            <div class="sim1-tooltip" id="sim1-tooltip" style="display:none">
+                                <div class="sim1-tooltip-title" id="sim1-tooltip-title"></div>
+                                <div class="sim1-tooltip-body" id="sim1-tooltip-body"></div>
+                            </div>
+                            <div class="arch-info-panel" id="sim1-info">
+                                <div class="info-card">
+                                    <span class="info-label">Total Layers</span>
+                                    <span class="info-value" id="sim1-total-layers">22</span>
+                                </div>
+                                <div class="info-card">
+                                    <span class="info-label">Frozen</span>
+                                    <span class="info-value frozen-val" id="sim1-frozen-count">16</span>
+                                </div>
+                                <div class="info-card">
+                                    <span class="info-label">Trainable</span>
+                                    <span class="info-value trainable-val" id="sim1-trainable-count">6</span>
+                                </div>
+                                <div class="info-card">
+                                    <span class="info-label">Total Params</span>
+                                    <span class="info-value" id="sim1-total-params">20.2M</span>
+                                </div>
+                                <div class="info-card">
+                                    <span class="info-label">Trainable Params</span>
+                                    <span class="info-value trainable-val" id="sim1-trainable-params">0.2M</span>
+                                </div>
+                                <div class="info-card">
+                                    <span class="info-label">Non-Trainable</span>
+                                    <span class="info-value frozen-val" id="sim1-nontrain-params">20.0M</span>
+                                </div>
+                                <div class="info-card">
+                                    <span class="info-label">Expected Accuracy</span>
+                                    <span class="info-value accuracy-val" id="sim1-expected-acc">—</span>
+                                </div>
+                                <div class="info-card">
+                                    <span class="info-label">Prediction</span>
+                                    <span class="info-value" id="sim1-prediction">—</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ─── SIM 2: Feature Extraction ─── -->
+        <div id="sim2" class="tab-content">
+            <div class="sim-layout">
+                <aside class="sim-sidebar glass-panel">
+                    <h2>Hierarchical Features</h2>
+                    <p>CNNs build up increasingly abstract representations layer by layer.</p>
+
+                    <h3>Key Concepts</h3>
+                    <div class="observe-box glass-panel">
+                        <ul>
+                            <li><strong>Edge Detection:</strong> Early layers detect simple edges and gradients.</li>
+                            <li><strong>Texture Patterns:</strong> Mid layers recognise repeated motifs (petals, veins).
+                            </li>
+                            <li><strong>Shape Recognition:</strong> Deep layers capture object-level contours.</li>
+                            <li><strong>Random Init:</strong> Noisy, meaningless activations.</li>
+                            <li><strong>Pretrained:</strong> General-purpose ImageNet features.</li>
+                            <li><strong>Fine-Tuned:</strong> Flower-specific, highly discriminative features.</li>
+                        </ul>
+                    </div>
+
+                    <h3>How to Use</h3>
+                    <div class="observe-box glass-panel">
+                        <ul>
+                            <li>Choose <strong>Model Mode</strong> (Random / Pretrained / Fine-Tuned)</li>
+                            <li>Select a <strong>Flower Image</strong></li>
+                            <li>Click <strong>Run Extraction</strong> and watch the pipeline light up stage-by-stage
+                            </li>
+                            <li>Compare the <strong>Feature Quality</strong> bar across modes</li>
+                        </ul>
+                    </div>
+                </aside>
+
+                <div class="sim-main">
+                    <div class="sim-header">
+                        <div class="header-text">
+                            <h2>Simulation 2: Feature Extraction – Hierarchical Learning</h2>
+                            <p class="sim-desc">Explore what a CNN learns at each layer — from low-level edges to
+                                high-level
+                                flower shapes. Compare random, pretrained, and fine-tuned representations.</p>
+                        </div>
+                        <div class="header-actions">
+                            <button class="btn-reset" id="sim2-reset">↺ Reset</button>
+                        </div>
+                    </div>
+                    <div class="sim-body">
+                        <div class="controls-row">
+                            <div class="control-group">
+                                <label>Model Mode</label>
+                                <select id="sim2-mode">
+                                    <option value="random">Random Initialization</option>
+                                    <option value="pretrained">Pretrained (ImageNet)</option>
+                                    <option value="finetuned">Fine-Tuned (Flowers)</option>
+                                </select>
+                            </div>
+                            <div class="control-group">
+                                <label>Flower Image</label>
+                                <select id="sim2-flower">
+                                    <option value="rose">Rose</option>
+                                    <option value="sunflower">Sunflower</option>
+                                    <option value="lotus">Lotus</option>
+                                    <option value="marigold">Marigold</option>
+                                    <option value="bougainvillea">Bougainvillea</option>
+                                </select>
+                            </div>
+                            <button class="btn-primary" id="sim2-start">▶ Run Extraction</button>
+                        </div>
+                        <div class="viz-container" id="sim2-viz">
+                            <div class="feature-pipeline" id="sim2-pipeline">
+                                <div class="feature-stage" id="sim2-stage-input">
+                                    <div class="stage-label">Input Image</div>
+                                    <div class="stage-canvas"><img id="sim2-img-input" src="" alt="Input"></div>
+                                </div>
+                                <div class="feature-arrow">→</div>
+                                <div class="feature-stage" id="sim2-stage-edges">
+                                    <div class="stage-label">Edge Detection</div>
+                                    <div class="stage-canvas"><img id="sim2-img-edges" src="" alt="Edges"></div>
+                                </div>
+                                <div class="feature-arrow">→</div>
+                                <div class="feature-stage" id="sim2-stage-blobs">
+                                    <div class="stage-label">Gradient Blobs</div>
+                                    <div class="stage-canvas"><img id="sim2-img-blobs" src="" alt="Blobs"></div>
+                                </div>
+                                <div class="feature-arrow">→</div>
+                                <div class="feature-stage" id="sim2-stage-textures">
+                                    <div class="stage-label">Texture Patterns</div>
+                                    <div class="stage-canvas"><img id="sim2-img-textures" src="" alt="Textures"></div>
+                                </div>
+                                <div class="feature-arrow">→</div>
+                                <div class="feature-stage" id="sim2-stage-parts">
+                                    <div class="stage-label">Object Parts</div>
+                                    <div class="stage-canvas"><img id="sim2-img-parts" src="" alt="Parts"></div>
+                                </div>
+                                <div class="feature-arrow">→</div>
+                                <div class="feature-stage" id="sim2-stage-shapes">
+                                    <div class="stage-label">Shape Recognition</div>
+                                    <div class="stage-canvas"><img id="sim2-img-shapes" src="" alt="Shapes"></div>
+                                </div>
+                                <div class="feature-arrow">→</div>
+                                <div class="feature-stage" id="sim2-stage-predict">
+                                    <div class="stage-label">Prediction</div>
+                                    <div class="stage-canvas prediction-box">
+                                        <span id="sim2-prediction">—</span>
+                                        <span id="sim2-confidence">—</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="feature-quality-bar">
+                                <span>Feature Quality:</span>
+                                <div class="quality-meter">
+                                    <div class="quality-fill" id="sim2-quality"></div>
+                                </div>
+                                <span id="sim2-quality-label">—</span>
+                            </div>
+                            <div class="stage-description" id="sim2-stage-desc">
+                                Select a mode and run the extraction to see how the CNN processes the image.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ─── SIM 3: Training Dynamics ─── -->
+        <div id="sim3" class="tab-content">
+            <div class="sim-layout">
+                <aside class="sim-sidebar glass-panel">
+                    <h2>Training Dynamics</h2>
+                    <p>Explore how hyperparameters shape the training and validation curves.</p>
+
+                    <h3>Key Concepts</h3>
+                    <div class="observe-box glass-panel">
+                        <ul>
+                            <li><strong>Freeze %:</strong> Higher freeze → less capacity to adapt, but safer.</li>
+                            <li><strong>Learning Rate:</strong> Controls step size; too high causes instability.</li>
+                            <li><strong>Dataset Size:</strong> Smaller data increases overfitting risk.</li>
+                            <li><strong>Overfitting:</strong> Train accuracy ≫ validation accuracy → model memorises.
+                            </li>
+                            <li><strong>Convergence:</strong> Both curves plateau near their best values.</li>
+                        </ul>
+                    </div>
+
+                    <h3>How to Use</h3>
+                    <div class="observe-box glass-panel">
+                        <ul>
+                            <li>Choose a <strong>Model</strong>, then adjust <strong>Freeze %</strong>,
+                                <strong>LR</strong>, and <strong>Data %</strong>
+                            </li>
+                            <li>Click <strong>Train</strong> to generate animated curves</li>
+                            <li>Watch the <strong>Overfitting Indicator</strong> bar at the bottom</li>
+                            <li>Try extreme values (LR=1e-2, Data=10%) to see instability</li>
+                        </ul>
+                    </div>
+                </aside>
+
+                <div class="sim-main">
+                    <div class="sim-header">
+                        <div class="header-text">
+                            <h2>Simulation 3: Freezing vs Fine-Tuning – Training Dynamics</h2>
+                            <p class="sim-desc">Adjust freezing, learning rate, and dataset size to see how they affect
+                                training and validation curves. Watch for overfitting!</p>
+                        </div>
+                        <div class="header-actions">
+                            <button class="btn-reset" id="sim3-reset">↺ Reset</button>
+                        </div>
+                    </div>
+                    <div class="sim-body">
+                        <div class="controls-row">
+                            <div class="control-group">
+                                <label>Model</label>
+                                <select id="sim3-model">
+                                    <option value="vgg19">VGG19</option>
+                                    <option value="mobilenet">MobileNetV2</option>
+                                </select>
+                            </div>
+                            <div class="control-group">
+                                <label>Freeze: <span id="sim3-freeze-val">70%</span></label>
+                                <input type="range" id="sim3-freeze" min="0" max="100" value="70" step="5">
+                            </div>
+                            <div class="control-group">
+                                <label>LR: <span id="sim3-lr-val">1e-5</span></label>
+                                <input type="range" id="sim3-lr" min="0" max="5" value="1" step="1">
+                            </div>
+                            <div class="control-group">
+                                <label>Data: <span id="sim3-data-val">100%</span></label>
+                                <input type="range" id="sim3-data" min="10" max="100" value="100" step="10">
+                            </div>
+                            <button class="btn-primary" id="sim3-train">▶ Train</button>
+                        </div>
+                        <div class="sim3-metrics-row">
+                            <div class="info-card">
+                                <span class="info-label">Best Val Acc</span>
+                                <span class="info-value accuracy-val" id="sim3-best-acc">—</span>
+                            </div>
+                            <div class="info-card">
+                                <span class="info-label">Lowest Loss</span>
+                                <span class="info-value" id="sim3-min-loss" style="color:var(--danger)">—</span>
+                            </div>
+                            <div class="info-card">
+                                <span class="info-label">Convergence</span>
+                                <span class="info-value" id="sim3-convergence">—</span>
+                            </div>
+                            <div class="info-card">
+                                <span class="info-label">Overfit Risk</span>
+                                <span class="info-value" id="sim3-overfit-risk">—</span>
+                            </div>
+                        </div>
+                        <div class="viz-container charts-grid" id="sim3-viz">
+                            <div class="chart-box">
+                                <h4>Train Accuracy</h4>
+                                <canvas id="sim3-chart-trainAcc"></canvas>
+                            </div>
+                            <div class="chart-box">
+                                <h4>Validation Accuracy</h4>
+                                <canvas id="sim3-chart-valAcc"></canvas>
+                            </div>
+                            <div class="chart-box">
+                                <h4>Train Loss</h4>
+                                <canvas id="sim3-chart-trainLoss"></canvas>
+                            </div>
+                            <div class="chart-box">
+                                <h4>Validation Loss</h4>
+                                <canvas id="sim3-chart-valLoss"></canvas>
+                            </div>
+                        </div>
+                        <div class="overfit-indicator" id="sim3-overfit">
+                            <span>Overfitting Indicator:</span>
+                            <div class="overfit-meter">
+                                <div class="overfit-fill" id="sim3-overfit-fill"></div>
+                            </div>
+                            <span id="sim3-overfit-label">None</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ─── SIM 4: Representation Space ─── -->
+        <div id="sim4" class="tab-content">
+            <div class="sim-layout">
+                <aside class="sim-sidebar glass-panel">
+                    <h2>Embedding Geometry</h2>
+                    <p>Visualise how learned representations separate flower classes in 2D space.</p>
+
+                    <h3>Key Concepts</h3>
+                    <div class="observe-box glass-panel">
+                        <ul>
+                            <li><strong>Embedding:</strong> A vector representation of each image in feature space.</li>
+                            <li><strong>Cluster Formation:</strong> Similar flowers should group together.</li>
+                            <li><strong>Random:</strong> Points scattered randomly, no structure.</li>
+                            <li><strong>Pretrained:</strong> Partial clustering from ImageNet features.</li>
+                            <li><strong>Fine-Tuned:</strong> Tight, well-separated clusters per class.</li>
+                        </ul>
+                    </div>
+
+                    <h3>How to Use</h3>
+                    <div class="observe-box glass-panel">
+                        <ul>
+                            <li>Select a <strong>Model</strong> and <strong>Mode</strong></li>
+                            <li>Drag the <strong>Epoch</strong> slider or click <strong>Animate</strong> to see clusters
+                                evolve</li>
+                            <li>Hover over points to see flower class names</li>
+                            <li>Compare how fast clusters tighten: VGG19 vs MobileNetV2</li>
+                        </ul>
+                    </div>
+                </aside>
+
+                <div class="sim-main">
+                    <div class="sim-header">
+                        <div class="header-text">
+                            <h2>Simulation 4: Representation Space – Embedding Geometry</h2>
+                            <p class="sim-desc">Watch how flower embeddings evolve from chaotic blobs to tight,
+                                separable
+                                clusters as the model trains. Compare random, pretrained, and fine-tuned
+                                representations.</p>
+                        </div>
+                        <div class="header-actions">
+                            <button class="btn-reset" id="sim4-reset">↺ Reset</button>
+                        </div>
+                    </div>
+                    <div class="sim-body">
+                        <div class="controls-row">
+                            <div class="control-group">
+                                <label>Model</label>
+                                <select id="sim4-model">
+                                    <option value="vgg19">VGG19</option>
+                                    <option value="mobilenet">MobileNetV2</option>
+                                </select>
+                            </div>
+                            <div class="control-group">
+                                <label>Mode</label>
+                                <select id="sim4-mode">
+                                    <option value="random">Random Init</option>
+                                    <option value="pretrained">Pretrained</option>
+                                    <option value="finetuned">Fine-Tuned</option>
+                                </select>
+                            </div>
+                            <div class="control-group">
+                                <label>Epoch: <span id="sim4-epoch-val">1</span></label>
+                                <input type="range" id="sim4-epoch" min="1" max="30" value="1">
+                            </div>
+                            <button class="btn-primary" id="sim4-animate">▶ Animate</button>
+                        </div>
+                        <div class="sim4-metrics-row">
+                            <div class="info-card">
+                                <span class="info-label">Separability</span>
+                                <span class="info-value" id="sim4-separability">—</span>
+                            </div>
+                            <div class="info-card">
+                                <span class="info-label">Intra-Cluster Spread</span>
+                                <span class="info-value" id="sim4-spread">—</span>
+                            </div>
+                            <div class="info-card">
+                                <span class="info-label">Inter-Cluster Gap</span>
+                                <span class="info-value" id="sim4-gap">—</span>
+                            </div>
+                        </div>
+                        <div class="viz-container" id="sim4-viz">
+                            <div class="scatter-wrap">
+                                <svg id="sim4-scatter" width="100%" height="300"></svg>
+                                <div class="scatter-legend" id="sim4-legend"></div>
+                            </div>
+                            <div class="concept-panel" id="sim4-concepts">
+                                <div class="concept-card">
+                                    <h4 id="sim4-concept-title">Manifold Learning</h4>
+                                    <p id="sim4-concept-desc">Wait for animation or select a mode to explore conceptual
+                                        insights.</p>
+                                </div>
+                                <div class="concept-card">
+                                    <h4>Clustering Geometry</h4>
+                                    <p>Higher separability indicates the model has learned distinct features for each
+                                        class,
+                                        enabling linear separation in high-dimensional space.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ─── SIM 5: Gradient Flow ─── -->
+        <div id="sim5" class="tab-content">
+            <div class="sim-layout">
+                <aside class="sim-sidebar glass-panel">
+                    <h2>Gradient Stability</h2>
+                    <p>Understand why careful freezing and low learning rates are crucial during transfer.</p>
+
+                    <h3>Key Concepts</h3>
+                    <div class="observe-box glass-panel">
+                        <ul>
+                            <li><strong>Gradient Magnitude:</strong> How strongly each layer's weights are updated.</li>
+                            <li><strong>Frozen Layers:</strong> Zero gradient — no update, knowledge is preserved.</li>
+                            <li><strong>Catastrophic Forgetting:</strong> Large updates destroy pretrained features.
+                            </li>
+                            <li><strong>Stability:</strong> Low LR + high freeze = safe adaptation.</li>
+                            <li><strong>Weight Change:</strong> Tracks how much each layer drifts from its pretrained
+                                state.</li>
+                        </ul>
+                    </div>
+
+                    <h3>How to Use</h3>
+                    <div class="observe-box glass-panel">
+                        <ul>
+                            <li>Adjust <strong>Freeze %</strong> and <strong>LR</strong> to see gradient/weight bar
+                                charts change</li>
+                            <li>Drag <strong>Epoch</strong> to see gradients evolve over time</li>
+                            <li>Watch the <strong>Stability Meter</strong> and <strong>Forgetting Risk</strong>
+                                indicator</li>
+                            <li>Try 0% freeze + high LR to see dangerous instability</li>
+                        </ul>
+                    </div>
+                </aside>
+
+                <div class="sim-main">
+                    <div class="sim-header">
+                        <div class="header-text">
+                            <h2>Simulation 5: Gradient Flow – Stability Explorer</h2>
+                            <p class="sim-desc">See how gradients flow through frozen vs trainable layers. Understand
+                                why
+                                low learning rates prevent catastrophic forgetting in deep networks.</p>
+                        </div>
+                        <div class="header-actions">
+                            <button class="btn-reset" id="sim5-reset">↺ Reset</button>
+                        </div>
+                    </div>
+                    <div class="sim-body">
+                        <div class="controls-row">
+                            <div class="control-group">
+                                <label>Model</label>
+                                <select id="sim5-model">
+                                    <option value="vgg19">VGG19</option>
+                                    <option value="mobilenet">MobileNetV2</option>
+                                </select>
+                            </div>
+                            <div class="control-group">
+                                <label>Freeze: <span id="sim5-freeze-val">70%</span></label>
+                                <input type="range" id="sim5-freeze" min="0" max="100" value="70" step="5">
+                            </div>
+                            <div class="control-group">
+                                <label>LR: <span id="sim5-lr-val">1e-5</span></label>
+                                <input type="range" id="sim5-lr" min="0" max="5" value="1" step="1">
+                            </div>
+                            <div class="control-group">
+                                <label>Epoch: <span id="sim5-epoch-val">1</span></label>
+                                <input type="range" id="sim5-epoch" min="1" max="30" value="1">
+                            </div>
+                        </div>
+                        <div class="sim5-metrics-row">
+                            <div class="info-card">
+                                <span class="info-label">Max Grad Norm</span>
+                                <span class="info-value" id="sim5-max-grad">—</span>
+                            </div>
+                            <div class="info-card">
+                                <span class="info-label">Avg Update Size</span>
+                                <span class="info-value" id="sim5-avg-update">—</span>
+                            </div>
+                            <div class="info-card">
+                                <span class="info-label">Stability Score</span>
+                                <span class="info-value" id="sim5-stability-score">—</span>
+                            </div>
+                            <div class="info-card">
+                                <span class="info-label">Forgetting Risk</span>
+                                <span class="info-value" id="sim5-risk-label">—</span>
+                            </div>
+                        </div>
+                        <div class="viz-container gradient-layout" id="sim5-viz">
+                            <div class="grad-charts-wrap">
+                                <div class="chart-box grad-chart">
+                                    <h4>Layer-wise Gradient Magnitude</h4>
+                                    <canvas id="sim5-chart-grad"></canvas>
+                                </div>
+                                <div class="chart-box grad-chart">
+                                    <h4>Layer-wise Weight Changes</h4>
+                                    <canvas id="sim5-chart-weight"></canvas>
+                                </div>
+                            </div>
+                            <div class="concept-panel" id="sim5-concepts">
+                                <div class="concept-card">
+                                    <h4 id="sim5-concept-title">Gradient Flow</h4>
+                                    <p id="sim5-concept-desc">Gradient flow determines how much each layer learns. If
+                                        gradients are too small (vanishing) or too large (exploding), training becomes
+                                        unstable.</p>
+                                </div>
+                                <div class="concept-card">
+                                    <h4>Weight Dynamics</h4>
+                                    <p>Large weight changes in pretrained layers can lead to "Catastrophic Forgetting,"
+                                        where the model loses its general feature extraction capabilities.</p>
+                                </div>
+                                <!-- Stability Meter -->
+                                <div class="stability-panel">
+                                    <h4>Stability Meter</h4>
+                                    <div class="stability-gauge" id="sim5-gauge">
+                                        <div class="gauge-fill" id="sim5-gauge-fill"></div>
+                                    </div>
+                                    <span class="gauge-label" id="sim5-gauge-label">Stable</span>
+                                    <div class="stability-info" id="sim5-stability-info">
+                                        <p id="sim5-forgetting">Catastrophic Forgetting Risk: <strong>Low</strong></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ─── SIM 6: Domain Strategy ─── -->
+        <div id="sim6" class="tab-content">
+            <div class="sim-layout">
+                <aside class="sim-sidebar glass-panel">
+                    <h2>Strategy Advisor</h2>
+                    <p>Learn when transfer learning helps and when to train from scratch.</p>
+
+                    <h3>Key Concepts</h3>
+                    <div class="observe-box glass-panel">
+                        <ul>
+                            <li><strong>Domain Similarity:</strong> How similar the source (ImageNet) is to the target.
+                            </li>
+                            <li><strong>Small + Similar:</strong> Freeze most layers, low LR → feature extraction.</li>
+                            <li><strong>Large + Similar:</strong> Fine-tune more layers for domain adaptation.</li>
+                            <li><strong>Small + Dissimilar:</strong> Hardest case; reduce capacity to avoid overfitting.
+                            </li>
+                            <li><strong>Large + Dissimilar:</strong> Train from scratch or fine-tune deeply.</li>
+                        </ul>
+                    </div>
+
+                    <h3>How to Use</h3>
+                    <div class="observe-box glass-panel">
+                        <ul>
+                            <li>Adjust <strong>Domain Similarity</strong>, <strong>Dataset Size</strong>, <strong>Freeze
+                                    Depth</strong>, and <strong>LR</strong></li>
+                            <li>Watch the <strong>Strategy Matrix</strong> point and <strong>Performance Radar</strong>
+                                respond in real-time</li>
+                            <li>Read the <strong>Strategy Recommendation</strong> panel for advice</li>
+                        </ul>
+                    </div>
+                </aside>
+
+                <div class="sim-main">
+                    <div class="sim-header">
+                        <div class="header-text">
+                            <h2>Simulation 6: Domain Similarity – Strategy Decision Lab</h2>
+                            <p class="sim-desc">Explore when transfer learning works best. Adjust domain similarity,
+                                data
+                                size, and compute budget to see real-time strategy recommendations.</p>
+                        </div>
+                        <div class="header-actions">
+                            <button class="btn-reset" id="sim6-reset">↺ Reset</button>
+                        </div>
+                    </div>
+                    <div class="sim-body">
+                        <div class="controls-row">
+                            <div class="control-group">
+                                <label>Domain Similarity: <span id="sim6-sim-val">50%</span></label>
+                                <input type="range" id="sim6-sim" min="0" max="100" value="50" step="5">
+                            </div>
+                            <div class="control-group">
+                                <label>Dataset Size: <span id="sim6-data-val">50%</span></label>
+                                <input type="range" id="sim6-data" min="10" max="100" value="50" step="5">
+                            </div>
+                            <div class="control-group">
+                                <label>Freeze Depth: <span id="sim6-freeze-val">50%</span></label>
+                                <input type="range" id="sim6-freeze" min="0" max="100" value="50" step="5">
+                            </div>
+                            <div class="control-group">
+                                <label>Learning Rate</label>
+                                <select id="sim6-lr">
+                                    <option value="1e-5">1e-5 (Very Low)</option>
+                                    <option value="3e-5">3e-5 (Low)</option>
+                                    <option value="1e-4">1e-4 (Medium)</option>
+                                    <option value="1e-3">1e-3 (High)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="viz-container strategy-layout" id="sim6-viz">
+                            <div class="strategy-dashboard">
+                                <!-- Column 1: Domain Scenario -->
+                                <div class="dashboard-box" id="sim6-domain-box">
+                                    <h4>Domain Scenario</h4>
+                                    <div class="domain-wrap">
+                                        <div class="domain-card source-domain">
+                                            <div class="domain-icon">🖼️</div>
+                                            <div class="domain-label">Source: ImageNet (1000 classes)</div>
+                                        </div>
+                                        <div class="domain-arrow">↓</div>
+                                        <div class="domain-card target-domain">
+                                            <div class="domain-icon" id="sim6-target-icon">🏥</div>
+                                            <div class="domain-label" id="sim6-target-label">Target: Medical (X-Ray)
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="rec-inline" id="sim6-recommendation">
+                                        <p id="sim6-rec-text">Adjust the sliders to see a personalized transfer learning
+                                            strategy recommendation.</p>
+                                    </div>
+                                </div>
+
+                                <!-- Column 2: Strategy Matrix -->
+                                <div class="dashboard-box" id="sim6-matrix-box">
+                                    <h4>Strategy Matrix</h4>
+                                    <div class="matrix-grid">
+                                        <div class="matrix-label label-tl">Scrap &<br>Retrain</div>
+                                        <div class="matrix-label label-tr">Fine Tune</div>
+                                        <div class="matrix-label label-bl">Static<br>Extractor</div>
+                                        <div class="matrix-label label-br">Hybrid<br>Tuning</div>
+                                        <div class="matrix-point" id="sim6-matrix-point"></div>
+                                    </div>
+                                    <div class="status-badge badge-optimal" id="sim6-status-badge">Optimal</div>
+                                </div>
+
+                                <!-- Column 3: Radar Chart -->
+                                <div class="dashboard-box" id="sim6-radar-box">
+                                    <h4>Performance Radar</h4>
+                                    <div class="radar-wrap" id="sim6-radar-chart">
+                                        <svg id="sim6-radar-svg" viewBox="0 0 200 200"></svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+
+</html>
