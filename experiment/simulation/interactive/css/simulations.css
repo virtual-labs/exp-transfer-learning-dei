@@ -1,0 +1,1555 @@
+/* ===================================
+   Transfer Learning Interactive Playground — CSS
+   Adapted from RNN Simulation styles
+   =================================== */
+
+:root {
+    --bg: #fafafa;
+    --surface: #ffffff;
+    --border: #e5e7eb;
+    --text: #1a1a2e;
+    --text-muted: #6b7280;
+    --accent: #6366f1;
+    --accent-light: #818cf8;
+    --accent-bg: #eef2ff;
+    --danger: #ef4444;
+    --success: #22c55e;
+    --warning: #f59e0b;
+    --primary: #6c5ce7;
+    --primary-light: #a29bfe;
+    --primary-dark: #5a4bd1;
+    --accent2: #00cec9;
+    --frozen-bg: #dfe6e9;
+    --frozen-text: #636e72;
+    --trainable-start: #6c5ce7;
+    --trainable-end: #00cec9;
+    --text-light: #6b7280;
+    --radius: 8px;
+    --radius-sm: 6px;
+    --shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    --shadow-hover: 0 6px 24px rgba(108, 92, 231, 0.15);
+    --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --mono: 'Fira Code', 'Consolas', monospace;
+    --nav-h: 48px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+}
+
+/* ─── Tab Navigation ─── */
+.tab-navigation {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 1.5rem;
+    height: var(--nav-h);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.tab-navigation .logo {
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-right: 1.5rem;
+    white-space: nowrap;
+}
+
+.tab-navigation .logo span {
+    color: var(--accent);
+}
+
+.tab-btn {
+    background: none;
+    border: none;
+    padding: 0 1rem;
+    height: var(--nav-h);
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+    white-space: nowrap;
+    font-family: var(--font);
+}
+
+.tab-btn:hover {
+    color: var(--text);
+}
+
+.tab-btn.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+}
+
+/* ─── Back Button ─── */
+.btn-back {
+    margin-left: auto;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 1rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--accent);
+    background: var(--accent-bg);
+    border: 1px solid var(--accent);
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    height: auto;
+    font-family: var(--font);
+}
+
+.btn-back:hover {
+    background: var(--accent);
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+}
+
+/* ─── Main Content ─── */
+.main-content {
+    height: calc(100vh - var(--nav-h));
+    overflow: hidden;
+}
+
+.tab-content {
+    display: none;
+    padding: 0.75rem 1rem;
+    height: 100%;
+    overflow: hidden;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* ─── Glass Panel ─── */
+.glass-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+/* ─── Simulation Layout — Fit viewport ─── */
+.sim-layout {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 0.75rem;
+    height: 100%;
+    overflow: hidden;
+}
+
+.sim-sidebar {
+    padding: 1rem;
+    overflow-y: auto;
+    height: 100%;
+}
+
+.sim-sidebar h2 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.35rem;
+}
+
+.sim-sidebar h3 {
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin: 0.6rem 0 0.3rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.sim-sidebar p {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
+}
+
+.sim-main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* ─── Observe Box ─── */
+.observe-box {
+    padding: 0.6rem 0.75rem;
+}
+
+.observe-box h4 {
+    font-size: 0.75rem;
+    margin-bottom: 0.25rem;
+}
+
+.observe-box ul {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    padding-left: 1rem;
+    line-height: 1.6;
+}
+
+/* ─── Control Groups ─── */
+.control-group {
+    margin-bottom: 0.5rem;
+}
+
+.control-group label {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin-bottom: 0.15rem;
+}
+
+.control-group input[type="range"] {
+    width: 100%;
+    accent-color: var(--accent);
+    height: 4px;
+}
+
+.control-group select {
+    width: 100%;
+    padding: 0.3rem 0.5rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-size: 0.78rem;
+    font-family: var(--font);
+    background: var(--surface);
+    color: var(--text);
+}
+
+.control-row {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: 0.25rem;
+}
+
+.control-row .value {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--accent);
+    min-width: 2.5rem;
+    text-align: right;
+    font-family: var(--mono);
+}
+
+/* ─── Buttons ─── */
+.btn {
+    padding: 0.35rem 0.85rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: var(--font);
+    transition: all 0.15s;
+    background: var(--surface);
+    color: var(--text);
+}
+
+.btn:hover {
+    border-color: var(--text);
+}
+
+.btn-primary {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+    padding: 0.35rem 0.85rem;
+    border-radius: 4px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: var(--font);
+    transition: all 0.15s;
+    border: 1px solid var(--accent);
+}
+
+.btn-primary:hover {
+    background: var(--accent-light);
+    border-color: var(--accent-light);
+}
+
+.btn-danger {
+    background: #fff;
+    color: var(--danger);
+    border-color: var(--danger);
+}
+
+.btn-danger:hover {
+    background: #fef2f2;
+}
+
+.btn-group {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+}
+
+/* ─── Status Bar ─── */
+.status-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.35rem 0.75rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    flex: 0 0 auto;
+}
+
+/* ============================================
+   TRANSFER LEARNING SPECIFIC STYLES
+   ============================================ */
+
+/* ─── Sim Header ─── */
+.sim-header {
+    margin-bottom: 8px;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.header-text {
+    flex: 1;
+}
+
+.sim-header h2 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 2px;
+    letter-spacing: -0.2px;
+}
+
+.header-actions {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.sim-desc {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    max-width: 800px;
+    line-height: 1.4;
+    margin-bottom: 8px;
+}
+
+/* ─── Controls Row ─── */
+.controls-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: flex-end;
+    margin-bottom: 8px;
+    flex-shrink: 0;
+    padding: 6px 10px;
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+}
+
+.controls-row .control-group {
+    margin-bottom: 0;
+}
+
+.controls-row .control-group label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 0.2px;
+}
+
+.controls-row .control-group select {
+    padding: 0.3rem 0.5rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-size: 0.78rem;
+    background: #fff;
+    color: var(--text);
+    cursor: pointer;
+    min-width: 120px;
+}
+
+.controls-row .control-group select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(108, 92, 231, 0.15);
+}
+
+/* Slider */
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 140px;
+    height: 5px;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--primary), var(--accent2));
+    outline: none;
+    cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid var(--primary);
+    cursor: pointer;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+}
+
+input[type="range"]::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid var(--primary);
+    cursor: pointer;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+}
+
+/* ─── Sim Body ─── */
+.sim-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+/* ─── Viz Container ─── */
+.viz-container {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px;
+    min-height: 0;
+    overflow: visible;
+    position: relative;
+}
+
+/* ─── Bottom Nav (Next/Prev) ─── */
+.sim-nav {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding: 6px 0 0;
+    flex-shrink: 0;
+    border-top: 1px solid var(--border);
+    margin-top: auto;
+}
+
+.btn-nav,
+.btn-reset {
+    padding: 0.3rem 0.8rem;
+    border-radius: 4px;
+    font-family: var(--font);
+    font-size: 0.75rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-nav {
+    background: var(--surface);
+    color: var(--accent);
+    border: 1px solid var(--accent-light);
+}
+
+.btn-nav:hover:not(:disabled) {
+    background: var(--accent);
+    color: #fff;
+}
+
+.btn-nav:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.btn-reset {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+}
+
+.btn-reset:hover {
+    border-color: var(--danger);
+    color: var(--danger);
+}
+
+/* ─── Secondary Button ─── */
+.btn-secondary {
+    padding: 0.35rem 0.85rem;
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-family: var(--font);
+    font-size: 0.78rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+/* ================================================
+   SIM 1: Architecture Pipeline
+   ================================================ */
+.arch-pipeline {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    padding: 12px 0;
+    overflow-x: auto;
+    min-height: 120px;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+}
+
+.layer-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 42px;
+    height: 90px;
+    border-radius: 6px;
+    font-size: 0.6rem;
+    font-weight: 600;
+    text-align: center;
+    transition: all 0.4s ease;
+    position: relative;
+    padding: 4px 2px;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+.layer-block.frozen {
+    background: var(--frozen-bg);
+    color: var(--frozen-text);
+    border: 1px solid #c8d6e5;
+}
+
+.layer-block.trainable {
+    background: linear-gradient(180deg, var(--trainable-start), var(--trainable-end));
+    color: #fff;
+    border: 1px solid var(--primary);
+    animation: layerPulse 2s ease-in-out infinite;
+}
+
+.layer-block:hover {
+    transform: scaleY(1.06);
+    box-shadow: 0 0 8px rgba(108, 92, 231, 0.3);
+    z-index: 5;
+}
+
+.layer-block .lock-icon {
+    font-size: 0.65rem;
+    margin-top: 2px;
+}
+
+.layer-block.active-signal {
+    box-shadow: 0 0 18px 4px rgba(108, 92, 231, 0.7);
+    transform: scaleY(1.12);
+    z-index: 10;
+}
+
+.layer-block .layer-name {
+    font-size: 0.5rem;
+    word-break: break-all;
+    line-height: 1.1;
+}
+
+@keyframes layerPulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.75;
+    }
+}
+
+.input-block,
+.output-block {
+    min-width: 60px;
+    height: 90px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.6rem;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.input-block {
+    background: linear-gradient(135deg, #fdcb6e, #e17055);
+    color: #fff;
+    border: 1px solid #e17055;
+}
+
+.output-block {
+    background: linear-gradient(135deg, #00b894, #00cec9);
+    color: #fff;
+    border: 1px solid #00b894;
+    min-width: 70px;
+}
+
+.pipeline-arrow {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    flex-shrink: 0;
+}
+
+/* Progress bar */
+.sim1-progress-wrap {
+    position: relative;
+    width: 100%;
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    margin: 4px 0 8px;
+    overflow: hidden;
+}
+
+.sim1-progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--primary), var(--accent2));
+    border-radius: 3px;
+    transition: width 0.15s ease;
+}
+
+.sim1-progress-label {
+    position: absolute;
+    right: 0;
+    top: -16px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: var(--primary);
+}
+
+/* Layer tooltip */
+.sim1-tooltip {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 8px 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    min-width: 160px;
+    z-index: 20;
+    pointer-events: none;
+}
+
+.sim1-tooltip-title {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 3px;
+}
+
+.sim1-tooltip-body {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+
+/* Info panel */
+.arch-info-panel {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+}
+
+.info-card {
+    background: var(--bg);
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+    text-align: center;
+    min-width: 70px;
+    flex: 1;
+    border: 1px solid var(--border);
+    transition: border-color 0.2s;
+}
+
+.info-card:hover {
+    border-color: var(--accent-light);
+}
+
+.info-label {
+    display: block;
+    font-size: 0.58rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 1px;
+}
+
+.info-value {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.info-value.frozen-val {
+    color: var(--frozen-text);
+}
+
+.info-value.trainable-val {
+    color: var(--primary);
+}
+
+.info-value.accuracy-val {
+    color: var(--success);
+}
+
+/* ================================================
+   SIM 2: Feature Extraction Pipeline
+   ================================================ */
+.feature-pipeline {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    flex-wrap: nowrap;
+    min-height: 160px;
+    overflow-x: auto;
+    padding: 10px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary) transparent;
+}
+
+.feature-stage {
+    text-align: center;
+    opacity: 0.4;
+    transition: all 0.6s ease;
+    flex: 0 0 auto;
+}
+
+.feature-stage.active {
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+.feature-stage.active .stage-canvas {
+    border-color: var(--primary);
+    box-shadow: 0 0 12px rgba(108, 92, 231, 0.4);
+    position: relative;
+}
+
+/* Processing Pulse Effect */
+.feature-stage.active:not(#sim2-stage-predict):not(#sim2-stage-input) .stage-canvas::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(0deg, transparent 0%, rgba(108, 92, 231, 0.2) 50%, transparent 100%);
+    background-size: 100% 200%;
+    animation: scanline 2s linear infinite;
+    pointer-events: none;
+    z-index: 2;
+}
+
+@keyframes scanline {
+    0% {
+        background-position: 0% 100%;
+    }
+
+    100% {
+        background-position: 0% -100%;
+    }
+}
+
+.stage-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+}
+
+.stage-canvas {
+    width: 110px;
+    height: 110px;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f0f0f0;
+}
+
+.stage-canvas img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: filter 1.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.8s ease;
+}
+
+.prediction-box {
+    background: linear-gradient(135deg, var(--primary), var(--accent2));
+    color: #fff;
+    flex-direction: column;
+    gap: 4px;
+    border-color: var(--primary);
+    padding: 8px;
+}
+
+.prediction-box span {
+    font-weight: 700;
+    font-size: 0.78rem;
+}
+
+#sim2-confidence {
+    font-size: 0.72rem;
+    opacity: 0.9;
+}
+
+.feature-arrow {
+    font-size: 1.4rem;
+    color: var(--text-muted);
+    flex-shrink: 0;
+}
+
+.feature-quality-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.stage-description {
+    margin-top: 10px;
+    padding: 8px 14px;
+    background: rgba(108, 92, 231, 0.05);
+    border-radius: var(--radius-sm);
+    font-size: 0.78rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+    border-left: 3px solid var(--primary);
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.quality-meter {
+    flex: 1;
+    max-width: 250px;
+    height: 8px;
+    background: var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.quality-fill {
+    height: 100%;
+    width: 0%;
+    border-radius: 4px;
+    background: linear-gradient(90deg, var(--danger), var(--warning), var(--success));
+    transition: width 0.8s ease;
+}
+
+/* ================================================
+   SIM 3: Training Dynamics Charts
+   ================================================ */
+.charts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 8px;
+    margin-bottom: 6px;
+}
+
+.chart-box {
+    background: var(--bg);
+    border-radius: var(--radius-sm);
+    padding: 8px 10px;
+    position: relative;
+    border: 1px solid var(--border);
+    height: 140px;
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.chart-box:hover {
+    border-color: var(--accent-light);
+    transform: translateY(-1px);
+}
+
+.chart-box h4 {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+    text-align: left;
+}
+
+.chart-box canvas {
+    width: 100% !important;
+    height: 110px !important;
+}
+
+/* Sim 3 Metrics */
+.sim3-metrics-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 4px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+}
+
+.sim3-metrics-row .info-card {
+    background: #fff;
+}
+
+.overfit-indicator {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    flex-shrink: 0;
+    padding: 8px 14px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+}
+
+.overfit-meter {
+    width: 120px;
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.overfit-fill {
+    height: 100%;
+    width: 0%;
+    border-radius: 3px;
+    background: var(--success);
+    transition: all 0.6s ease;
+}
+
+/* ================================================
+   SIM 4: Representation Space (D3.js)
+   ================================================ */
+.sim4-metrics-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 6px;
+    margin-bottom: 8px;
+}
+
+#sim4-viz {
+    display: flex;
+    gap: 14px;
+    padding: 0;
+    overflow: hidden;
+}
+
+.scatter-wrap {
+    flex: 2;
+    background: #fff;
+    border-radius: var(--radius-sm);
+    position: relative;
+    padding: 14px;
+}
+
+.concept-panel {
+    flex: 1;
+    background: var(--bg);
+    border-left: 1px solid var(--border);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    overflow-y: auto;
+}
+
+.concept-card {
+    background: #fff;
+    padding: 12px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.concept-card h4 {
+    font-size: 0.78rem;
+    color: var(--primary);
+    margin-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 3px;
+}
+
+.concept-card p {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+#sim4-scatter {
+    margin-top: 8px;
+    background-image:
+        radial-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(to right, var(--bg) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--bg) 1px, transparent 1px);
+    background-size: 20px 20px, 100px 100px, 100px 100px;
+    background-position: center;
+}
+
+.hull {
+    fill-opacity: 0.08;
+    stroke-width: 2px;
+    stroke-linejoin: round;
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+    filter: drop-shadow(0 0 4px currentColor);
+}
+
+.centroid {
+    filter: drop-shadow(0 0 6px currentColor);
+    animation: centroidPulse 3s ease-in-out infinite;
+}
+
+@keyframes centroidPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+
+    50% {
+        transform: scale(1.2);
+        opacity: 1;
+    }
+}
+
+.scatter-legend {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    z-index: 10;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    opacity: 0.7;
+}
+
+.legend-item:hover,
+.legend-item.active {
+    opacity: 1;
+    transform: translateY(-1px);
+    color: var(--primary);
+}
+
+.legend-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+}
+
+.tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: rgba(0, 0, 0, 0.85);
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 5px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    z-index: 100;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Visualization enhancements */
+.scatter-point {
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+.scatter-point.faded {
+    opacity: 0.1 !important;
+}
+
+.scatter-point.highlighted {
+    opacity: 1 !important;
+    stroke-width: 2px;
+    r: 6 !important;
+}
+
+/* ================================================
+   SIM 5: Gradient Flow
+   ================================================ */
+.sim5-metrics-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 4px;
+    margin-bottom: 8px;
+}
+
+.gradient-layout {
+    display: flex;
+    gap: 14px;
+    padding: 0;
+}
+
+.grad-charts-wrap {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding: 12px;
+    background: #fff;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+}
+
+.grad-chart {
+    height: 130px;
+    min-height: 130px;
+}
+
+.stability-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    background: #fff;
+    padding: 10px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    margin-top: 6px;
+}
+
+.stability-panel h4 {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text);
+    white-space: nowrap;
+}
+
+.stability-gauge {
+    width: 100%;
+    max-width: 180px;
+    height: 10px;
+    background: var(--border);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.gauge-fill {
+    height: 100%;
+    width: 80%;
+    border-radius: 5px;
+    background: linear-gradient(to right, #e17055, #fdcb6e, #00b894);
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.gauge-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--success);
+    min-width: 50px;
+}
+
+.stability-info {
+    flex: 1;
+}
+
+.stability-info p {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+}
+
+/* ================================================
+   SIM 6: Domain Strategy
+   ================================================ */
+#panel-sim6 {
+    position: relative;
+}
+
+/* ─── Strategy Dashboard ─── */
+.strategy-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.strategy-dashboard {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-top: 8px;
+}
+
+.dashboard-box {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--primary);
+    border-radius: var(--radius-sm);
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    min-height: 220px;
+    justify-content: space-between;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dashboard-box:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+#sim6-domain-box {
+    border-top-color: #00cec9;
+}
+
+#sim6-matrix-box {
+    border-top-color: #6c5ce7;
+}
+
+#sim6-radar-box {
+    border-top-color: #fd79a8;
+}
+
+.dashboard-box h4 {
+    font-size: 0.72rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+    color: var(--text);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    text-align: center;
+}
+
+/* Domain Visualizer */
+.domain-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    margin-top: 8px;
+}
+
+.domain-card {
+    text-align: center;
+    padding: 8px;
+    border-radius: 6px;
+    background: var(--bg);
+    width: 85%;
+    border: 1px solid var(--border);
+    transition: all 0.3s ease;
+}
+
+.domain-icon {
+    font-size: 1.5rem;
+    margin-bottom: 3px;
+}
+
+.domain-label {
+    font-size: 0.62rem;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.domain-arrow {
+    font-size: 0.9rem;
+    color: var(--primary);
+    animation: bounceDown 2s infinite;
+}
+
+@keyframes bounceDown {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(4px);
+    }
+}
+
+/* Strategy Matrix */
+.matrix-grid {
+    width: 200px;
+    height: 200px;
+    border: 1px solid #1e272e;
+    position: relative;
+    background:
+        linear-gradient(to right, transparent calc(50% - 0.5px), #e8eaff calc(50% - 0.5px), #e8eaff calc(50% + 0.5px), transparent calc(50% + 0.5px)),
+        linear-gradient(to bottom, transparent calc(50% - 0.5px), #e8eaff calc(50% - 0.5px), #e8eaff calc(50% + 0.5px), transparent calc(50% + 0.5px));
+    margin: auto;
+    background-color: #fff;
+}
+
+.matrix-label {
+    position: absolute;
+    font-size: 0.62rem;
+    font-weight: 700;
+    color: #95a5a6;
+    line-height: 1.2;
+    padding: 6px;
+}
+
+.label-tl {
+    top: 0;
+    left: 0;
+    text-align: left;
+}
+
+.label-tr {
+    top: 0;
+    right: 0;
+    text-align: right;
+}
+
+.label-bl {
+    bottom: 0;
+    left: 0;
+    text-align: left;
+}
+
+.label-br {
+    bottom: 0;
+    right: 0;
+    text-align: right;
+}
+
+.matrix-point {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: #6c5ce7;
+    border-radius: 50%;
+    box-shadow: 0 0 12px rgba(108, 92, 231, 0.6), 0 0 4px rgba(108, 92, 231, 0.4);
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 5;
+    margin-left: -6px;
+    margin-top: -6px;
+}
+
+/* Radar Chart */
+.radar-wrap {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#sim6-radar-svg {
+    max-width: 100%;
+}
+
+.radar-axis line {
+    stroke: var(--border);
+    stroke-width: 1;
+}
+
+.radar-grid {
+    fill: none;
+    stroke: var(--border);
+    stroke-dasharray: 2, 2;
+}
+
+.radar-area {
+    fill: var(--primary);
+    fill-opacity: 0.3;
+    stroke: var(--primary);
+    stroke-width: 2;
+}
+
+.radar-line {
+    fill: none;
+    stroke: var(--primary);
+    stroke-width: 2;
+}
+
+/* Status Badges */
+.status-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 0.55rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.badge-optimal {
+    background: #00b894;
+    color: #fff;
+}
+
+.badge-caution {
+    background: #fdcb6e;
+    color: #fff;
+}
+
+.badge-danger {
+    background: #e17055;
+    color: #fff;
+}
+
+.rec-inline {
+    margin-top: 14px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--border);
+    width: 100%;
+}
+
+.rec-inline p {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    text-align: center;
+}
+
+.rec-inline strong {
+    color: var(--primary);
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 1200px) {
+    .strategy-dashboard {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 900px) {
+    .sim-layout {
+        grid-template-columns: 1fr;
+        height: auto;
+        overflow: auto;
+    }
+
+    .sim-sidebar {
+        height: auto;
+    }
+
+    .main-content {
+        height: auto;
+        overflow: auto;
+    }
+
+    .tab-content {
+        height: auto;
+        overflow: auto;
+    }
+
+    .tab-navigation {
+        overflow-x: auto;
+    }
+}
+
+@media (max-width: 600px) {
+    .tab-content {
+        padding: 0.5rem;
+    }
+
+    .tab-btn {
+        font-size: 0.72rem;
+        padding: 0 0.5rem;
+    }
+}
+
+/* ─── Scrollbar ─── */
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+}

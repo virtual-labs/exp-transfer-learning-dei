@@ -2,37 +2,173 @@
   "version": 2.0,
   "questions": [
     {
-      "question": "This is a Sample Question 1?",
+      "question": "1. What is Transfer Learning?",
       "answers": {
-        "a": "answer1",
-        "b": "answer2",
-        "c": "answer3",
-        "d": "answer4"
+        "a": "Training a CNN model from scratch every time",
+        "b": "Removing convolution layers permanently",
+        "c": "Using only test data for training",
+        "d": "Using a pretrained model for a new related task"
       },
       "explanations": {
-        "a": "Explanation 1  <a href='www.google.com'>here</a>",
-        "b": "Explanation 2",
-        "c": "Explanation 2",
-        "d": "Explanation 2"
+        "a": "Incorrect because transfer learning reuses knowledge from an already trained model instead of starting from zero.",
+        "b": "Incorrect because transfer learning does not require removing layers; it mainly reuses or fine-tunes them.",
+        "c": "Incorrect because test data is not used for training in standard machine learning practice.",
+        "d": "Correct because transfer learning applies knowledge learned from a source dataset to improve learning on a target dataset."
+      },
+      "correctAnswer": "d",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "2. Why is Transfer Learning useful for small datasets?",
+      "answers": {
+        "a": "It increases the number of classes automatically",
+        "b": "It removes the need for training",
+        "c": "It reduces overfitting by using pretrained features",
+        "d": "It converts images into text"
+      },
+      "explanations": {
+        "a": "Incorrect because transfer learning does not change the number of classes automatically.",
+        "b": "Incorrect because training is still required at least for the final classification layers.",
+        "c": "Correct because pretrained CNNs already contain useful feature extractors, helping the model generalize better even with less data.",
+        "d": "Incorrect because transfer learning does not perform data-type conversion."
+      },
+      "correctAnswer": "c",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "3. Which large dataset is commonly used to pretrain deep CNN models?",
+      "answers": {
+        "a": "MNIST",
+        "b": "ImageNet",
+        "c": "Oxford Flowers",
+        "d": "IMDB Reviews"
+      },
+      "explanations": {
+        "a": "Incorrect because MNIST is small and does not provide rich features for large-scale object recognition.",
+        "b": "Correct because ImageNet contains millions of images and is widely used to pretrain CNN backbones.",
+        "c": "Incorrect because it is a smaller dataset usually used as a target dataset for fine-tuning.",
+        "d": "Incorrect because IMDB is a text dataset, not an image dataset."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "4. Which of the following is a lightweight pretrained CNN model?",
+      "answers": {
+        "a": "MobileNet",
+        "b": "VGG19",
+        "c": "Inception-ResNet",
+        "d": "AlexNet"
+      },
+      "explanations": {
+        "a": "Correct because MobileNet is designed for efficiency and low computational cost.",
+        "b": "Incorrect because VGG19 is heavy and has a large number of parameters.",
+        "c": "Incorrect because it is more complex and computationally expensive.",
+        "d": "Incorrect because it is not as lightweight and efficient as MobileNet for modern devices."
       },
       "correctAnswer": "a",
       "difficulty": "beginner"
     },
     {
-      "question": "This is a Sample Question 2?",
+      "question": "5. In Transfer Learning, \u201cfreezing layers\u201d means:",
       "answers": {
-        "a": "answer1",
-        "b": "answer2",
-        "c": "answer3",
-        "d": "answer4"
+        "a": "Removing layers from the model",
+        "b": "Preventing weight updates during training",
+        "c": "Increasing the learning rate of all layers",
+        "d": "Training only the input layer"
       },
       "explanations": {
-        "a": "Explanation 1  <a href='www.google.com'>here</a>",
-        "b": "Explanation 2",
-        "c": "Explanation 2",
-        "d": "Explanation 2"
+        "a": "Incorrect because freezing does not remove layers; it only stops their parameters from updating.",
+        "b": "Correct because frozen layers keep pretrained weights fixed and do not learn during fine-tuning.",
+        "c": "Incorrect because freezing does not involve increasing learning rate.",
+        "d": "Incorrect because freezing typically affects early layers, not only the input layer."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "6. The early layers of a CNN generally learn:",
+      "answers": {
+        "a": "Very complex object-specific patterns",
+        "b": "Only flower names",
+        "c": "Basic features like edges and textures",
+        "d": "Only background noise"
+      },
+      "explanations": {
+        "a": "Incorrect because complex patterns are learned in deeper layers.",
+        "b": "Incorrect because CNN layers learn visual patterns, not text or names.",
+        "c": "Correct because early convolution layers extract low-level visual features.",
+        "d": "Incorrect because CNN filters are trained to learn useful patterns, not random noise."
       },
       "correctAnswer": "c",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "7. Fine-tuning in Transfer Learning refers to:",
+      "answers": {
+        "a": "Training the entire CNN model from scratch",
+        "b": "Retraining some pretrained layers on the target dataset",
+        "c": "Using only validation data for training",
+        "d": "Converting CNN into an SVM model"
+      },
+      "explanations": {
+        "a": "Incorrect because fine-tuning starts from pretrained weights.",
+        "b": "Correct because fine-tuning updates selected layers so the model adapts to the new task.",
+        "c": "Incorrect because validation data is meant for evaluation, not training.",
+        "d": "Incorrect because fine-tuning does not change the architecture into a different algorithm."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "8. Transfer learning works best when:",
+      "answers": {
+        "a": "Target task has limited training data and a related pretrained model is available",
+        "b": "Target task always has unlimited data",
+        "c": "Only text inputs are given for image models",
+        "d": "No preprocessing is performed"
+      },
+      "explanations": {
+        "a": "Correct because pretrained weights provide strong features, helping small datasets.",
+        "b": "Incorrect because transfer learning is most useful when data is limited.",
+        "c": "Incorrect because CNN backbones are designed for images, not raw text.",
+        "d": "Incorrect because preprocessing is important for stable training."
+      },
+      "correctAnswer": "a",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "9. Which layer is commonly used to reduce spatial dimensions in CNNs?",
+      "answers": {
+        "a": "Softmax layer",
+        "b": "Dense layer",
+        "c": "Dropout layer",
+        "d": "Pooling layer"
+      },
+      "explanations": {
+        "a": "Incorrect because Softmax is used for classification output, not dimension reduction.",
+        "b": "Incorrect because dense layers work on flattened vectors, not spatial reduction.",
+        "c": "Incorrect because dropout prevents overfitting but does not reduce spatial dimensions directly.",
+        "d": "Correct because pooling reduces width and height while keeping important information."
+      },
+      "correctAnswer": "d",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "10. What is a major risk when transferring from an unrelated source dataset?",
+      "answers": {
+        "a": "Faster training always occurs",
+        "b": "Negative Transfer",
+        "c": "Automatic dataset cleaning",
+        "d": "Perfect accuracy is guaranteed"
+      },
+      "explanations": {
+        "a": "Incorrect because faster training is not guaranteed if the features are not useful.",
+        "b": "Correct because transferring irrelevant knowledge can reduce target performance.",
+        "c": "Incorrect because transfer learning does not clean the dataset.",
+        "d": "Incorrect because no method guarantees perfect accuracy."
+      },
+      "correctAnswer": "b",
       "difficulty": "beginner"
     }
   ]

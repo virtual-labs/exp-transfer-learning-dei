@@ -375,10 +375,17 @@ async function typeText(elementId, text, delay = CONFIG.typingDelay) {
 // ============================================
 
 function resetSimulation() {
+    if (!confirm('Are you sure you want to reset the entire experiment?')) {
+        return;
+    }
+    
     state.currentStep = 1;
     state.completedSteps.clear();
     state.runningStep = null;
     state.isRunningAll = false;
+    
+    // Reset UI
+    elements.downloadBtn.classList.add('btn-locked');
     
     // Reset step items
     elements.stepItems.forEach((item, index) => {
@@ -437,7 +444,8 @@ function resetSimulation() {
 
 function showCompletionMessage() {
     elements.completionMessage.classList.remove('hidden');
-    elements.completionMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    elements.downloadBtn.classList.remove('btn-locked');
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
 }
 
 // ============================================
@@ -484,16 +492,26 @@ function init() {
     elements.freezeSelect.addEventListener('change', handleFreezeChange);
     
     // Event listeners for run buttons
-    document.querySelectorAll('.run-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const step = parseInt(e.target.closest('.run-btn').dataset.step);
-            executeCell(step);
-        });
+    elements.cells.forEach((cell, index) => {
+        const runBtn = cell.querySelector('.run-btn');
+        if (runBtn) {
+            runBtn.addEventListener('click', () => executeCell(index + 1));
+        }
     });
     
     // Download Experiment button
     if (elements.downloadBtn) {
-        elements.downloadBtn.addEventListener('click', downloadExperiment);
+        // Lock download button initially
+        elements.downloadBtn.classList.add('btn-locked');
+        elements.downloadBtn.title = 'Run all cells to enable download';
+        
+        elements.downloadBtn.addEventListener('click', () => {
+            if (elements.downloadBtn.classList.contains('btn-locked')) {
+                alert('Please run all the cells first to download the experiment.');
+                return;
+            }
+            downloadExperiment();
+        });
     }
     
     // Reset button
